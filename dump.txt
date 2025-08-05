@@ -1,0 +1,912 @@
+Namespace(no_cuda=False, lr=0.0001, l2=1e-05, dropout=0.5, batch_size=64, hidden_dim=1024, n_head=8, epochs=150, temp=2, tensorboard=False, class_weight=True, Dataset='IEMOCAP')
+Running on GPU
+temp 2
+total parameters: 79687704
+training parameters: 79687704
+loss: 7.36210298538208
+loss: 7.175987243652344
+loss: 6.675933837890625
+epoch: 1, train_loss: 7.275300025939941, train_acc: 21.14, train_fscore: 20.03, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 6.675899982452393, test_acc: 40.42, test_fscore: 39.61, time: 4.51 sec
+loss: 6.6557207107543945
+loss: 6.495789527893066
+loss: 6.260012149810791
+epoch: 2, train_loss: 6.5802001953125, train_acc: 39.9, train_fscore: 36.0, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 6.260000228881836, test_acc: 41.9, test_fscore: 34.95, time: 4.34 sec
+loss: 6.242254257202148
+loss: 5.793422698974609
+loss: 5.905972957611084
+epoch: 3, train_loss: 6.037199974060059, train_acc: 47.37, train_fscore: 41.74, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 5.906000137329102, test_acc: 47.32, test_fscore: 46.53, time: 4.12 sec
+loss: 5.529250621795654
+loss: 5.546294212341309
+loss: 5.540660858154297
+epoch: 4, train_loss: 5.537099838256836, train_acc: 55.16, train_fscore: 54.04, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 5.5406999588012695, test_acc: 54.84, test_fscore: 54.53, time: 4.48 sec
+loss: 5.116478443145752
+loss: 5.023867130279541
+loss: 5.143891334533691
+epoch: 5, train_loss: 5.07420015335083, train_acc: 60.12, train_fscore: 59.44, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 5.143899917602539, test_acc: 58.16, test_fscore: 58.12, time: 4.14 sec
+loss: 4.7514824867248535
+loss: 4.683075904846191
+loss: 4.891977310180664
+epoch: 6, train_loss: 4.7204999923706055, train_acc: 61.79, train_fscore: 60.95, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.892000198364258, test_acc: 57.12, test_fscore: 57.5, time: 4.33 sec
+loss: 4.325422286987305
+loss: 4.380221843719482
+loss: 4.708976745605469
+epoch: 7, train_loss: 4.350599765777588, train_acc: 64.01, train_fscore: 63.69, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.709000110626221, test_acc: 57.92, test_fscore: 58.92, time: 2.67 sec
+loss: 4.135497093200684
+loss: 4.118566989898682
+loss: 4.543918132781982
+epoch: 8, train_loss: 4.127900123596191, train_acc: 65.46, train_fscore: 65.51, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.543900012969971, test_acc: 60.94, test_fscore: 61.66, time: 2.75 sec
+loss: 3.9377501010894775
+loss: 3.9571728706359863
+loss: 4.387903213500977
+epoch: 9, train_loss: 3.947000026702881, train_acc: 67.4, train_fscore: 67.19, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.387899875640869, test_acc: 62.42, test_fscore: 62.84, time: 4.22 sec
+loss: 3.85136342048645
+loss: 3.7100911140441895
+loss: 4.269047737121582
+epoch: 10, train_loss: 3.783400058746338, train_acc: 68.52, train_fscore: 68.44, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.269000053405762, test_acc: 60.07, test_fscore: 60.9, time: 3.82 sec
+              precision    recall  f1-score   support
+
+           0     0.3736    0.4514    0.4088     144.0
+           1     0.7850    0.6857    0.7320     245.0
+           2     0.5662    0.6458    0.6034     384.0
+           3     0.6094    0.6882    0.6464     170.0
+           4     0.7738    0.6522    0.7078     299.0
+           5     0.6232    0.5774    0.5995     381.0
+
+    accuracy                         0.6242    1623.0
+   macro avg     0.6219    0.6168    0.6163    1623.0
+weighted avg     0.6383    0.6242    0.6284    1623.0
+
+[[ 65.   6.  22.   1.  47.   3.]
+ [ 12. 168.  37.   2.   0.  26.]
+ [ 39.  25. 248.  11.   5.  56.]
+ [  0.   0.  10. 117.   1.  42.]
+ [ 52.   0.  43.   3. 195.   6.]
+ [  6.  15.  78.  58.   4. 220.]]
+loss: 3.6546127796173096
+loss: 3.75087571144104
+loss: 4.102078437805176
+epoch: 11, train_loss: 3.7014999389648438, train_acc: 68.8, train_fscore: 68.72, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.102099895477295, test_acc: 64.57, test_fscore: 64.95, time: 3.07 sec
+loss: 3.472447395324707
+loss: 3.7494378089904785
+loss: 3.9738519191741943
+epoch: 12, train_loss: 3.5998001098632812, train_acc: 70.05, train_fscore: 69.49, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.973900079727173, test_acc: 66.11, test_fscore: 66.26, time: 3.79 sec
+loss: 3.5978150367736816
+loss: 3.4364724159240723
+loss: 3.847909927368164
+epoch: 13, train_loss: 3.522599935531616, train_acc: 71.55, train_fscore: 71.25, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.847899913787842, test_acc: 64.7, test_fscore: 65.49, time: 4.34 sec
+loss: 3.493716239929199
+loss: 3.4154818058013916
+loss: 3.807706832885742
+epoch: 14, train_loss: 3.456199884414673, train_acc: 70.28, train_fscore: 70.17, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8076999187469482, test_acc: 64.33, test_fscore: 64.79, time: 3.93 sec
+loss: 3.231276750564575
+loss: 3.534414529800415
+loss: 3.808391571044922
+epoch: 15, train_loss: 3.3715999126434326, train_acc: 71.48, train_fscore: 70.92, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8083999156951904, test_acc: 66.05, test_fscore: 66.44, time: 3.02 sec
+loss: 3.3735837936401367
+loss: 3.2089433670043945
+loss: 3.80228590965271
+epoch: 16, train_loss: 3.298099994659424, train_acc: 73.1, train_fscore: 72.87, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.802299976348877, test_acc: 65.8, test_fscore: 66.48, time: 2.64 sec
+loss: 3.1224751472473145
+loss: 3.4097776412963867
+loss: 3.744710683822632
+epoch: 17, train_loss: 3.2599000930786133, train_acc: 73.39, train_fscore: 73.37, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7446999549865723, test_acc: 64.57, test_fscore: 65.24, time: 2.68 sec
+loss: 3.1485977172851562
+loss: 3.2512426376342773
+loss: 3.752652645111084
+epoch: 18, train_loss: 3.199899911880493, train_acc: 72.58, train_fscore: 72.14, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.752700090408325, test_acc: 64.26, test_fscore: 64.48, time: 2.5 sec
+loss: 3.330692768096924
+loss: 2.939272165298462
+loss: 3.769838571548462
+epoch: 19, train_loss: 3.1522998809814453, train_acc: 72.98, train_fscore: 72.62, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7697999477386475, test_acc: 65.06, test_fscore: 65.72, time: 2.38 sec
+loss: 3.139580249786377
+loss: 3.026020050048828
+loss: 3.742767572402954
+epoch: 20, train_loss: 3.0869998931884766, train_acc: 74.7, train_fscore: 74.64, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.742799997329712, test_acc: 66.36, test_fscore: 66.93, time: 1.35 sec
+              precision    recall  f1-score   support
+
+           0     0.4118    0.6319    0.4986     144.0
+           1     0.8009    0.7388    0.7686     245.0
+           2     0.6647    0.5990    0.6301     384.0
+           3     0.6444    0.6824    0.6629     170.0
+           4     0.8390    0.6622    0.7402     299.0
+           5     0.6304    0.6850    0.6566     381.0
+
+    accuracy                         0.6636    1623.0
+   macro avg     0.6652    0.6665    0.6595    1623.0
+weighted avg     0.6848    0.6636    0.6693    1623.0
+
+[[ 91.   8.  10.   1.  29.   5.]
+ [  6. 181.  27.   2.   0.  29.]
+ [ 48.  23. 230.  10.   5.  68.]
+ [  0.   0.   7. 116.   0.  47.]
+ [ 70.   1.  25.   1. 198.   4.]
+ [  6.  13.  47.  50.   4. 261.]]
+loss: 3.172729253768921
+loss: 2.8883862495422363
+loss: 3.65901255607605
+epoch: 21, train_loss: 3.0378000736236572, train_acc: 75.68, train_fscore: 75.55, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.6589999198913574, test_acc: 65.68, test_fscore: 65.94, time: 2.88 sec
+loss: 3.0865302085876465
+loss: 2.8384647369384766
+loss: 3.6552927494049072
+epoch: 22, train_loss: 2.9621999263763428, train_acc: 75.54, train_fscore: 75.2, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.6552999019622803, test_acc: 65.37, test_fscore: 65.83, time: 4.14 sec
+loss: 2.9794905185699463
+loss: 2.849820613861084
+loss: 3.6450555324554443
+epoch: 23, train_loss: 2.922100067138672, train_acc: 75.99, train_fscore: 75.77, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.6451001167297363, test_acc: 66.36, test_fscore: 66.93, time: 4.1 sec
+loss: 2.7554450035095215
+loss: 2.994507312774658
+loss: 3.5902771949768066
+epoch: 24, train_loss: 2.8671998977661133, train_acc: 76.85, train_fscore: 76.71, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5903000831604004, test_acc: 67.65, test_fscore: 68.2, time: 2.63 sec
+loss: 2.864431381225586
+loss: 2.7914109230041504
+loss: 3.5595834255218506
+epoch: 25, train_loss: 2.8313000202178955, train_acc: 77.4, train_fscore: 77.27, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5596001148223877, test_acc: 67.9, test_fscore: 68.39, time: 4.13 sec
+loss: 2.7991795539855957
+loss: 2.7806267738342285
+loss: 3.5156774520874023
+epoch: 26, train_loss: 2.7906999588012695, train_acc: 77.81, train_fscore: 77.67, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.515700101852417, test_acc: 67.59, test_fscore: 68.1, time: 4.46 sec
+loss: 2.665755271911621
+loss: 2.8547961711883545
+loss: 3.4835028648376465
+epoch: 27, train_loss: 2.7564001083374023, train_acc: 77.85, train_fscore: 77.68, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4835000038146973, test_acc: 68.33, test_fscore: 68.67, time: 4.3 sec
+loss: 2.5581300258636475
+loss: 2.882624626159668
+loss: 3.5106053352355957
+epoch: 28, train_loss: 2.7090001106262207, train_acc: 78.71, train_fscore: 78.6, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5106000900268555, test_acc: 67.41, test_fscore: 67.95, time: 4.23 sec
+loss: 2.652230739593506
+loss: 2.6922175884246826
+loss: 3.51385235786438
+epoch: 29, train_loss: 2.671099901199341, train_acc: 78.86, train_fscore: 78.84, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5139000415802, test_acc: 66.91, test_fscore: 67.42, time: 4.23 sec
+loss: 2.593263626098633
+loss: 2.6945362091064453
+loss: 3.4386134147644043
+epoch: 30, train_loss: 2.6389000415802, train_acc: 78.83, train_fscore: 78.71, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4386000633239746, test_acc: 68.27, test_fscore: 68.63, time: 5.07 sec
+              precision    recall  f1-score   support
+
+           0     0.4715    0.6319    0.5401     144.0
+           1     0.7769    0.7673    0.7721     245.0
+           2     0.6667    0.6562    0.6614     384.0
+           3     0.6250    0.7059    0.6630     170.0
+           4     0.8450    0.7291    0.7828     299.0
+           5     0.6667    0.6299    0.6478     381.0
+
+    accuracy                         0.6833    1623.0
+   macro avg     0.6753    0.6867    0.6778    1623.0
+weighted avg     0.6945    0.6833    0.6867    1623.0
+
+[[ 91.   8.  11.   1.  29.   4.]
+ [  4. 188.  24.   2.   0.  27.]
+ [ 39.  30. 252.   8.   6.  49.]
+ [  0.   1.  11. 120.   0.  38.]
+ [ 56.   1.  22.   0. 218.   2.]
+ [  3.  14.  58.  61.   5. 240.]]
+loss: 2.7829947471618652
+loss: 2.3928093910217285
+loss: 3.4040634632110596
+epoch: 31, train_loss: 2.605799913406372, train_acc: 79.71, train_fscore: 79.59, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.404099941253662, test_acc: 68.45, test_fscore: 68.85, time: 3.96 sec
+loss: 2.6291751861572266
+loss: 2.4765052795410156
+loss: 3.4056594371795654
+epoch: 32, train_loss: 2.5559000968933105, train_acc: 79.79, train_fscore: 79.68, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4056999683380127, test_acc: 67.84, test_fscore: 68.2, time: 3.66 sec
+loss: 2.5596506595611572
+loss: 2.5000221729278564
+loss: 3.4331271648406982
+epoch: 33, train_loss: 2.5322000980377197, train_acc: 79.43, train_fscore: 79.25, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4330999851226807, test_acc: 66.91, test_fscore: 67.46, time: 3.85 sec
+loss: 2.5229475498199463
+loss: 2.4884822368621826
+loss: 3.42476749420166
+epoch: 34, train_loss: 2.507200002670288, train_acc: 80.28, train_fscore: 80.16, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.424799919128418, test_acc: 68.21, test_fscore: 68.75, time: 3.81 sec
+loss: 2.5185108184814453
+loss: 2.4373722076416016
+loss: 3.40142822265625
+epoch: 35, train_loss: 2.4828999042510986, train_acc: 80.6, train_fscore: 80.58, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.401400089263916, test_acc: 69.01, test_fscore: 69.37, time: 2.02 sec
+loss: 2.234821081161499
+loss: 2.7134623527526855
+loss: 3.3671090602874756
+epoch: 36, train_loss: 2.4567999839782715, train_acc: 81.2, train_fscore: 81.11, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3671000003814697, test_acc: 68.39, test_fscore: 68.72, time: 3.3 sec
+loss: 2.425034523010254
+loss: 2.4373669624328613
+loss: 3.3831164836883545
+epoch: 37, train_loss: 2.4307000637054443, train_acc: 80.67, train_fscore: 80.49, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3831000328063965, test_acc: 68.08, test_fscore: 68.58, time: 1.3 sec
+loss: 2.4844322204589844
+loss: 2.3118011951446533
+loss: 3.3607382774353027
+epoch: 38, train_loss: 2.40310001373291, train_acc: 81.29, train_fscore: 81.22, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3606998920440674, test_acc: 68.95, test_fscore: 69.36, time: 2.72 sec
+loss: 2.2756972312927246
+loss: 2.4497551918029785
+loss: 3.359724283218384
+epoch: 39, train_loss: 2.3559999465942383, train_acc: 82.46, train_fscore: 82.39, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3596999645233154, test_acc: 69.01, test_fscore: 69.3, time: 2.52 sec
+loss: 2.1790339946746826
+loss: 2.5396666526794434
+loss: 3.3432364463806152
+epoch: 40, train_loss: 2.3499999046325684, train_acc: 82.13, train_fscore: 82.04, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3431999683380127, test_acc: 69.38, test_fscore: 69.76, time: 3.8 sec
+              precision    recall  f1-score   support
+
+           0     0.4741    0.7639    0.5851     144.0
+           1     0.7835    0.8122    0.7976     245.0
+           2     0.7054    0.6484    0.6757     384.0
+           3     0.6146    0.7412    0.6720     170.0
+           4     0.8803    0.6890    0.7730     299.0
+           5     0.6841    0.6194    0.6501     381.0
+
+    accuracy                         0.6938    1623.0
+   macro avg     0.6903    0.7124    0.6923    1623.0
+weighted avg     0.7144    0.6938    0.6976    1623.0
+
+[[110.   6.   8.   0.  18.   2.]
+ [  2. 199.  14.   2.   1.  27.]
+ [ 47.  30. 249.   8.   4.  46.]
+ [  0.   2.  10. 126.   0.  32.]
+ [ 71.   0.  20.   0. 206.   2.]
+ [  2.  17.  52.  69.   5. 236.]]
+loss: 2.336489200592041
+loss: 2.2887020111083984
+loss: 3.3244669437408447
+epoch: 41, train_loss: 2.313800096511841, train_acc: 81.93, train_fscore: 81.81, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.32450008392334, test_acc: 69.19, test_fscore: 69.57, time: 2.2 sec
+loss: 2.3670268058776855
+loss: 2.2423510551452637
+loss: 3.3560049533843994
+epoch: 42, train_loss: 2.308500051498413, train_acc: 82.32, train_fscore: 82.24, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3559999465942383, test_acc: 69.5, test_fscore: 69.95, time: 3.06 sec
+loss: 2.228767156600952
+loss: 2.3218541145324707
+loss: 3.3391096591949463
+epoch: 43, train_loss: 2.27020001411438, train_acc: 83.18, train_fscore: 83.16, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.339099884033203, test_acc: 69.25, test_fscore: 69.61, time: 2.55 sec
+loss: 2.3527424335479736
+loss: 2.1452596187591553
+loss: 3.303065776824951
+epoch: 44, train_loss: 2.2541000843048096, train_acc: 82.63, train_fscore: 82.5, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.303100109100342, test_acc: 69.69, test_fscore: 69.9, time: 2.55 sec
+loss: 2.112793207168579
+loss: 2.310856342315674
+loss: 3.330609083175659
+epoch: 45, train_loss: 2.2053000926971436, train_acc: 83.18, train_fscore: 83.03, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3306000232696533, test_acc: 69.19, test_fscore: 69.62, time: 2.56 sec
+loss: 2.1735260486602783
+loss: 2.2703895568847656
+loss: 3.3409922122955322
+epoch: 46, train_loss: 2.2151999473571777, train_acc: 83.87, train_fscore: 83.86, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3410000801086426, test_acc: 69.99, test_fscore: 70.36, time: 4.04 sec
+loss: 2.27081561088562
+loss: 2.1538565158843994
+loss: 3.3252687454223633
+epoch: 47, train_loss: 2.211899995803833, train_acc: 83.29, train_fscore: 83.18, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3252999782562256, test_acc: 69.81, test_fscore: 70.13, time: 4.25 sec
+loss: 2.243586778640747
+loss: 2.066307544708252
+loss: 3.3307793140411377
+epoch: 48, train_loss: 2.161799907684326, train_acc: 84.01, train_fscore: 83.9, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3308000564575195, test_acc: 69.87, test_fscore: 70.28, time: 2.6 sec
+loss: 2.166538715362549
+loss: 2.125399112701416
+loss: 3.352954149246216
+epoch: 49, train_loss: 2.1470000743865967, train_acc: 84.1, train_fscore: 83.99, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3529999256134033, test_acc: 69.87, test_fscore: 70.27, time: 3.0 sec
+loss: 2.0392260551452637
+loss: 2.229069948196411
+loss: 3.4162774085998535
+epoch: 50, train_loss: 2.12719988822937, train_acc: 83.86, train_fscore: 83.79, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.416300058364868, test_acc: 69.5, test_fscore: 69.89, time: 4.26 sec
+              precision    recall  f1-score   support
+
+           0     0.4957    0.7986    0.6117     144.0
+           1     0.7897    0.8122    0.8008     245.0
+           2     0.7175    0.6745    0.6953     384.0
+           3     0.6117    0.7412    0.6702     170.0
+           4     0.9045    0.6656    0.7669     299.0
+           5     0.6761    0.6247    0.6494     381.0
+
+    accuracy                         0.6999    1623.0
+   macro avg     0.6992    0.7195    0.6990    1623.0
+weighted avg     0.7224    0.6999    0.7036    1623.0
+
+[[115.   6.   9.   0.  12.   2.]
+ [  2. 199.  13.   3.   1.  27.]
+ [ 41.  27. 259.   8.   3.  46.]
+ [  0.   2.   8. 126.   0.  34.]
+ [ 72.   0.  23.   0. 199.   5.]
+ [  2.  18.  49.  69.   5. 238.]]
+loss: 2.0881009101867676
+loss: 2.108250617980957
+loss: 3.3151817321777344
+epoch: 51, train_loss: 2.097599983215332, train_acc: 85.42, train_fscore: 85.35, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.315200090408325, test_acc: 70.3, test_fscore: 70.63, time: 4.23 sec
+loss: 2.096184730529785
+loss: 2.0104317665100098
+loss: 3.3818535804748535
+epoch: 52, train_loss: 2.0564000606536865, train_acc: 85.37, train_fscore: 85.29, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3819000720977783, test_acc: 69.07, test_fscore: 69.59, time: 4.39 sec
+loss: 1.9310048818588257
+loss: 2.1807384490966797
+loss: 3.408219575881958
+epoch: 53, train_loss: 2.0443999767303467, train_acc: 84.94, train_fscore: 84.88, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4082000255584717, test_acc: 68.95, test_fscore: 69.27, time: 4.37 sec
+loss: 1.9692729711532593
+loss: 2.1316957473754883
+loss: 3.3805601596832275
+epoch: 54, train_loss: 2.045300006866455, train_acc: 85.47, train_fscore: 85.38, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3805999755859375, test_acc: 70.67, test_fscore: 71.05, time: 4.31 sec
+loss: 1.9018982648849487
+loss: 2.140075445175171
+loss: 3.3934950828552246
+epoch: 55, train_loss: 2.009000062942505, train_acc: 86.06, train_fscore: 86.02, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3935000896453857, test_acc: 69.44, test_fscore: 69.88, time: 3.77 sec
+loss: 1.9127651453018188
+loss: 2.0616562366485596
+loss: 3.3919644355773926
+epoch: 56, train_loss: 1.9817999601364136, train_acc: 85.78, train_fscore: 85.66, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3919999599456787, test_acc: 69.69, test_fscore: 69.88, time: 3.41 sec
+loss: 1.9887263774871826
+loss: 1.9921791553497314
+loss: 3.350855588912964
+epoch: 57, train_loss: 1.990399956703186, train_acc: 86.2, train_fscore: 86.11, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.3508999347686768, test_acc: 70.73, test_fscore: 71.09, time: 4.09 sec
+loss: 1.8495709896087646
+loss: 2.0861501693725586
+loss: 3.3515706062316895
+epoch: 58, train_loss: 1.9601999521255493, train_acc: 86.27, train_fscore: 86.24, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.351599931716919, test_acc: 69.81, test_fscore: 70.22, time: 3.52 sec
+loss: 2.0214152336120605
+loss: 1.7957223653793335
+loss: 3.40053391456604
+epoch: 59, train_loss: 1.9190000295639038, train_acc: 86.68, train_fscore: 86.53, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4005000591278076, test_acc: 69.81, test_fscore: 70.1, time: 3.21 sec
+loss: 1.90376615524292
+loss: 1.9307985305786133
+loss: 3.4737257957458496
+epoch: 60, train_loss: 1.9157999753952026, train_acc: 87.09, train_fscore: 87.02, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4737000465393066, test_acc: 69.81, test_fscore: 70.24, time: 3.68 sec
+              precision    recall  f1-score   support
+
+           0     0.4978    0.7708    0.6049     144.0
+           1     0.7874    0.8163    0.8016     245.0
+           2     0.7227    0.6719    0.6964     384.0
+           3     0.6629    0.6824    0.6725     170.0
+           4     0.8819    0.6990    0.7799     299.0
+           5     0.6737    0.6667    0.6702     381.0
+
+    accuracy                         0.7073    1623.0
+   macro avg     0.7044    0.7178    0.7042    1623.0
+weighted avg     0.7241    0.7073    0.7109    1623.0
+
+[[111.   6.  10.   0.  16.   1.]
+ [  2. 200.  11.   2.   1.  29.]
+ [ 43.  27. 258.   4.   5.  47.]
+ [  0.   3.   9. 116.   0.  42.]
+ [ 65.   0.  21.   0. 209.   4.]
+ [  2.  18.  48.  53.   6. 254.]]
+loss: 1.958939790725708
+loss: 1.8730978965759277
+loss: 3.3807215690612793
+epoch: 61, train_loss: 1.9157999753952026, train_acc: 86.95, train_fscore: 86.89, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.38070011138916, test_acc: 70.79, test_fscore: 71.03, time: 3.85 sec
+loss: 1.9050536155700684
+loss: 1.8608771562576294
+loss: 3.4706263542175293
+epoch: 62, train_loss: 1.88510000705719, train_acc: 87.42, train_fscore: 87.3, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.470599889755249, test_acc: 70.18, test_fscore: 70.59, time: 2.84 sec
+loss: 1.8339838981628418
+loss: 1.8725615739822388
+loss: 3.4663925170898438
+epoch: 63, train_loss: 1.8523000478744507, train_acc: 87.44, train_fscore: 87.38, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.466399908065796, test_acc: 69.87, test_fscore: 70.22, time: 3.17 sec
+loss: 1.8290467262268066
+loss: 1.8349101543426514
+loss: 3.442103624343872
+epoch: 64, train_loss: 1.8317999839782715, train_acc: 87.88, train_fscore: 87.81, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4421000480651855, test_acc: 69.93, test_fscore: 70.26, time: 2.62 sec
+loss: 1.9246331453323364
+loss: 1.7129778861999512
+loss: 3.474442958831787
+epoch: 65, train_loss: 1.8271000385284424, train_acc: 87.83, train_fscore: 87.75, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.474400043487549, test_acc: 70.49, test_fscore: 70.76, time: 2.98 sec
+loss: 1.7682631015777588
+loss: 1.8666280508041382
+loss: 3.484126091003418
+epoch: 66, train_loss: 1.8137999773025513, train_acc: 88.55, train_fscore: 88.47, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.484100103378296, test_acc: 69.99, test_fscore: 70.34, time: 2.51 sec
+loss: 1.8926845788955688
+loss: 1.6491385698318481
+loss: 3.47391414642334
+epoch: 67, train_loss: 1.7799999713897705, train_acc: 88.76, train_fscore: 88.69, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.473900079727173, test_acc: 70.3, test_fscore: 70.76, time: 2.69 sec
+loss: 1.847836971282959
+loss: 1.6826448440551758
+loss: 3.4533042907714844
+epoch: 68, train_loss: 1.7702000141143799, train_acc: 88.47, train_fscore: 88.4, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.4532999992370605, test_acc: 70.49, test_fscore: 70.84, time: 2.66 sec
+loss: 1.7334516048431396
+loss: 1.8178402185440063
+loss: 3.5492401123046875
+epoch: 69, train_loss: 1.7702000141143799, train_acc: 88.86, train_fscore: 88.8, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5492000579833984, test_acc: 69.5, test_fscore: 69.78, time: 1.91 sec
+loss: 1.8083600997924805
+loss: 1.6764638423919678
+loss: 3.532358169555664
+epoch: 70, train_loss: 1.7475999593734741, train_acc: 88.74, train_fscore: 88.67, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.532399892807007, test_acc: 69.99, test_fscore: 70.44, time: 3.42 sec
+              precision    recall  f1-score   support
+
+           0     0.4978    0.7708    0.6049     144.0
+           1     0.7874    0.8163    0.8016     245.0
+           2     0.7227    0.6719    0.6964     384.0
+           3     0.6629    0.6824    0.6725     170.0
+           4     0.8819    0.6990    0.7799     299.0
+           5     0.6737    0.6667    0.6702     381.0
+
+    accuracy                         0.7073    1623.0
+   macro avg     0.7044    0.7178    0.7042    1623.0
+weighted avg     0.7241    0.7073    0.7109    1623.0
+
+[[111.   6.  10.   0.  16.   1.]
+ [  2. 200.  11.   2.   1.  29.]
+ [ 43.  27. 258.   4.   5.  47.]
+ [  0.   3.   9. 116.   0.  42.]
+ [ 65.   0.  21.   0. 209.   4.]
+ [  2.  18.  48.  53.   6. 254.]]
+loss: 1.6748313903808594
+loss: 1.7733540534973145
+loss: 3.5194060802459717
+epoch: 71, train_loss: 1.7213000059127808, train_acc: 89.35, train_fscore: 89.29, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.519399881362915, test_acc: 70.12, test_fscore: 70.46, time: 4.16 sec
+loss: 1.7243961095809937
+loss: 1.7068480253219604
+loss: 3.5720407962799072
+epoch: 72, train_loss: 1.7165000438690186, train_acc: 89.12, train_fscore: 89.06, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.572000026702881, test_acc: 69.93, test_fscore: 70.18, time: 3.22 sec
+loss: 1.7004988193511963
+loss: 1.677481770515442
+loss: 3.531398296356201
+epoch: 73, train_loss: 1.690000057220459, train_acc: 89.69, train_fscore: 89.61, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.531399965286255, test_acc: 70.43, test_fscore: 70.84, time: 4.26 sec
+loss: 1.6318416595458984
+loss: 1.764005184173584
+loss: 3.585754632949829
+epoch: 74, train_loss: 1.6922999620437622, train_acc: 89.1, train_fscore: 89.03, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5857999324798584, test_acc: 69.87, test_fscore: 70.26, time: 4.23 sec
+loss: 1.671420693397522
+loss: 1.6853584051132202
+loss: 3.659688711166382
+epoch: 75, train_loss: 1.6777000427246094, train_acc: 89.78, train_fscore: 89.71, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.6596999168395996, test_acc: 69.38, test_fscore: 69.56, time: 4.28 sec
+loss: 1.5767191648483276
+loss: 1.6790437698364258
+loss: 3.54490065574646
+epoch: 76, train_loss: 1.625100016593933, train_acc: 90.41, train_fscore: 90.36, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5448999404907227, test_acc: 70.98, test_fscore: 71.29, time: 4.21 sec
+loss: 1.568298101425171
+loss: 1.7016534805297852
+loss: 3.5787763595581055
+epoch: 77, train_loss: 1.6302000284194946, train_acc: 89.97, train_fscore: 89.88, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5787999629974365, test_acc: 70.18, test_fscore: 70.58, time: 4.4 sec
+loss: 1.5705312490463257
+loss: 1.6405677795410156
+loss: 3.6237754821777344
+epoch: 78, train_loss: 1.6015000343322754, train_acc: 90.71, train_fscore: 90.66, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.623800039291382, test_acc: 69.81, test_fscore: 70.16, time: 5.29 sec
+loss: 1.6888054609298706
+loss: 1.5057709217071533
+loss: 3.5345396995544434
+epoch: 79, train_loss: 1.603700041770935, train_acc: 90.6, train_fscore: 90.54, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.5344998836517334, test_acc: 70.67, test_fscore: 70.98, time: 3.18 sec
+loss: 1.528372049331665
+loss: 1.6442002058029175
+loss: 3.6207633018493652
+epoch: 80, train_loss: 1.5870000123977661, train_acc: 91.33, train_fscore: 91.27, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.620800018310547, test_acc: 70.24, test_fscore: 70.56, time: 3.44 sec
+              precision    recall  f1-score   support
+
+           0     0.5094    0.7500    0.6067     144.0
+           1     0.7913    0.8204    0.8056     245.0
+           2     0.7275    0.7161    0.7218     384.0
+           3     0.6091    0.7059    0.6540     170.0
+           4     0.8833    0.7090    0.7866     299.0
+           5     0.6901    0.6194    0.6528     381.0
+
+    accuracy                         0.7098    1623.0
+   macro avg     0.7018    0.7201    0.7046    1623.0
+weighted avg     0.7253    0.7098    0.7129    1623.0
+
+[[108.   5.  12.   0.  18.   1.]
+ [  2. 201.  10.   3.   1.  28.]
+ [ 36.  26. 275.   5.   3.  39.]
+ [  1.   5.  10. 120.   0.  34.]
+ [ 61.   1.  20.   1. 212.   4.]
+ [  4.  16.  51.  68.   6. 236.]]
+loss: 1.6119251251220703
+loss: 1.543683648109436
+loss: 3.704102039337158
+epoch: 81, train_loss: 1.579200029373169, train_acc: 90.48, train_fscore: 90.43, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7040998935699463, test_acc: 70.61, test_fscore: 70.88, time: 3.0 sec
+loss: 1.6250545978546143
+loss: 1.4697625637054443
+loss: 3.6836023330688477
+epoch: 82, train_loss: 1.5555000305175781, train_acc: 91.26, train_fscore: 91.23, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.6835999488830566, test_acc: 70.18, test_fscore: 70.46, time: 3.66 sec
+loss: 1.4230525493621826
+loss: 1.684171199798584
+loss: 3.6629247665405273
+epoch: 83, train_loss: 1.5448999404907227, train_acc: 91.46, train_fscore: 91.4, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.662899971008301, test_acc: 69.69, test_fscore: 70.02, time: 1.75 sec
+loss: 1.5593011379241943
+loss: 1.460140585899353
+loss: 3.7071826457977295
+epoch: 84, train_loss: 1.5118000507354736, train_acc: 91.72, train_fscore: 91.65, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.707200050354004, test_acc: 69.87, test_fscore: 70.17, time: 4.24 sec
+loss: 1.487006425857544
+loss: 1.5212162733078003
+loss: 3.7871792316436768
+epoch: 85, train_loss: 1.5024000406265259, train_acc: 91.72, train_fscore: 91.68, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7871999740600586, test_acc: 69.81, test_fscore: 70.1, time: 3.34 sec
+loss: 1.4696979522705078
+loss: 1.531611680984497
+loss: 3.7139601707458496
+epoch: 86, train_loss: 1.498900055885315, train_acc: 91.72, train_fscore: 91.67, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7139999866485596, test_acc: 70.06, test_fscore: 70.48, time: 3.14 sec
+loss: 1.4212454557418823
+loss: 1.5793557167053223
+loss: 3.8052287101745605
+epoch: 87, train_loss: 1.4967000484466553, train_acc: 91.81, train_fscore: 91.77, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8052000999450684, test_acc: 69.32, test_fscore: 69.66, time: 3.1 sec
+loss: 1.4609954357147217
+loss: 1.4899609088897705
+loss: 3.8634700775146484
+epoch: 88, train_loss: 1.475000023841858, train_acc: 92.2, train_fscore: 92.17, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8635001182556152, test_acc: 69.62, test_fscore: 69.87, time: 2.43 sec
+loss: 1.4789990186691284
+loss: 1.4428346157073975
+loss: 3.7480695247650146
+epoch: 89, train_loss: 1.4629000425338745, train_acc: 92.39, train_fscore: 92.33, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7481000423431396, test_acc: 70.49, test_fscore: 70.8, time: 2.46 sec
+loss: 1.5139055252075195
+loss: 1.416874885559082
+loss: 3.739215612411499
+epoch: 90, train_loss: 1.4677000045776367, train_acc: 91.57, train_fscore: 91.51, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.7392001152038574, test_acc: 70.55, test_fscore: 70.9, time: 1.86 sec
+              precision    recall  f1-score   support
+
+           0     0.5094    0.7500    0.6067     144.0
+           1     0.7913    0.8204    0.8056     245.0
+           2     0.7275    0.7161    0.7218     384.0
+           3     0.6091    0.7059    0.6540     170.0
+           4     0.8833    0.7090    0.7866     299.0
+           5     0.6901    0.6194    0.6528     381.0
+
+    accuracy                         0.7098    1623.0
+   macro avg     0.7018    0.7201    0.7046    1623.0
+weighted avg     0.7253    0.7098    0.7129    1623.0
+
+[[108.   5.  12.   0.  18.   1.]
+ [  2. 201.  10.   3.   1.  28.]
+ [ 36.  26. 275.   5.   3.  39.]
+ [  1.   5.  10. 120.   0.  34.]
+ [ 61.   1.  20.   1. 212.   4.]
+ [  4.  16.  51.  68.   6. 236.]]
+loss: 1.408574104309082
+loss: 1.461894154548645
+loss: 3.8392059803009033
+epoch: 91, train_loss: 1.4328999519348145, train_acc: 92.72, train_fscore: 92.68, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.839200019836426, test_acc: 69.38, test_fscore: 69.59, time: 1.72 sec
+loss: 1.4450916051864624
+loss: 1.411535382270813
+loss: 3.872575044631958
+epoch: 92, train_loss: 1.4285000562667847, train_acc: 92.53, train_fscore: 92.49, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8726000785827637, test_acc: 71.04, test_fscore: 71.37, time: 2.49 sec
+loss: 1.4165979623794556
+loss: 1.3844534158706665
+loss: 3.9087934494018555
+epoch: 93, train_loss: 1.4023000001907349, train_acc: 93.12, train_fscore: 93.09, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.908799886703491, test_acc: 70.24, test_fscore: 70.63, time: 2.6 sec
+loss: 1.4244952201843262
+loss: 1.4006849527359009
+loss: 3.821072578430176
+epoch: 94, train_loss: 1.413100004196167, train_acc: 92.48, train_fscore: 92.41, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8210999965667725, test_acc: 70.86, test_fscore: 71.2, time: 2.44 sec
+loss: 1.44863760471344
+loss: 1.3439894914627075
+loss: 3.946176052093506
+epoch: 95, train_loss: 1.4000999927520752, train_acc: 93.18, train_fscore: 93.15, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.946199893951416, test_acc: 69.81, test_fscore: 70.13, time: 4.16 sec
+loss: 1.3424543142318726
+loss: 1.4454374313354492
+loss: 3.9607653617858887
+epoch: 96, train_loss: 1.391700029373169, train_acc: 92.81, train_fscore: 92.77, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.9607999324798584, test_acc: 69.99, test_fscore: 70.25, time: 4.11 sec
+loss: 1.3449580669403076
+loss: 1.398386001586914
+loss: 3.865054130554199
+epoch: 97, train_loss: 1.3703999519348145, train_acc: 93.46, train_fscore: 93.43, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.8650999069213867, test_acc: 71.16, test_fscore: 71.47, time: 2.02 sec
+loss: 1.362186312675476
+loss: 1.3324066400527954
+loss: 3.9175968170166016
+epoch: 98, train_loss: 1.3479000329971313, train_acc: 93.51, train_fscore: 93.46, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.91759991645813, test_acc: 70.18, test_fscore: 70.52, time: 4.2 sec
+loss: 1.3460975885391235
+loss: 1.3457415103912354
+loss: 3.969724416732788
+epoch: 99, train_loss: 1.345900058746338, train_acc: 93.29, train_fscore: 93.26, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.9697000980377197, test_acc: 70.12, test_fscore: 70.46, time: 4.31 sec
+loss: 1.3694576025009155
+loss: 1.2403626441955566
+loss: 3.9087839126586914
+epoch: 100, train_loss: 1.3106000423431396, train_acc: 94.1, train_fscore: 94.08, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.908799886703491, test_acc: 70.18, test_fscore: 70.39, time: 4.25 sec
+              precision    recall  f1-score   support
+
+           0     0.5126    0.7083    0.5948     144.0
+           1     0.8074    0.8041    0.8057     245.0
+           2     0.7136    0.7266    0.7200     384.0
+           3     0.6316    0.7059    0.6667     170.0
+           4     0.8659    0.7124    0.7817     299.0
+           5     0.6912    0.6404    0.6649     381.0
+
+    accuracy                         0.7116    1623.0
+   macro avg     0.7037    0.7163    0.7056    1623.0
+weighted avg     0.7241    0.7116    0.7147    1623.0
+
+[[102.   3.  14.   0.  24.   1.]
+ [  3. 197.  14.   4.   1.  26.]
+ [ 36.  21. 279.   5.   3.  40.]
+ [  0.   6.   6. 120.   0.  38.]
+ [ 55.   1.  25.   1. 213.   4.]
+ [  3.  16.  53.  60.   5. 244.]]
+loss: 1.2619107961654663
+loss: 1.3685414791107178
+loss: 3.976938009262085
+epoch: 101, train_loss: 1.3112000226974487, train_acc: 93.22, train_fscore: 93.16, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.976900100708008, test_acc: 69.87, test_fscore: 70.14, time: 4.34 sec
+loss: 1.3538060188293457
+loss: 1.2743639945983887
+loss: 4.096186637878418
+epoch: 102, train_loss: 1.3158999681472778, train_acc: 94.34, train_fscore: 94.32, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.096199989318848, test_acc: 69.25, test_fscore: 69.53, time: 4.25 sec
+loss: 1.2560596466064453
+loss: 1.350991129875183
+loss: 3.9800121784210205
+epoch: 103, train_loss: 1.2999000549316406, train_acc: 94.17, train_fscore: 94.13, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.9800000190734863, test_acc: 69.87, test_fscore: 70.16, time: 5.02 sec
+loss: 1.175179362297058
+loss: 1.3788354396820068
+loss: 3.9704272747039795
+epoch: 104, train_loss: 1.2763999700546265, train_acc: 94.44, train_fscore: 94.41, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 3.970400094985962, test_acc: 70.61, test_fscore: 70.98, time: 3.13 sec
+loss: 1.337132453918457
+loss: 1.21303391456604
+loss: 4.149346828460693
+epoch: 105, train_loss: 1.2799999713897705, train_acc: 94.92, train_fscore: 94.91, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.1493000984191895, test_acc: 69.69, test_fscore: 69.96, time: 3.94 sec
+loss: 1.2311373949050903
+loss: 1.3224258422851562
+loss: 4.186139106750488
+epoch: 106, train_loss: 1.2755999565124512, train_acc: 94.39, train_fscore: 94.36, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.186100006103516, test_acc: 70.3, test_fscore: 70.62, time: 3.86 sec
+loss: 1.24602210521698
+loss: 1.2811282873153687
+loss: 4.049158096313477
+epoch: 107, train_loss: 1.263100028038025, train_acc: 94.51, train_fscore: 94.48, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.049200057983398, test_acc: 70.67, test_fscore: 70.86, time: 3.04 sec
+loss: 1.1993987560272217
+loss: 1.2972198724746704
+loss: 4.185712814331055
+epoch: 108, train_loss: 1.246000051498413, train_acc: 95.15, train_fscore: 95.13, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.185699939727783, test_acc: 70.06, test_fscore: 70.3, time: 2.14 sec
+loss: 1.219590187072754
+loss: 1.2809312343597412
+loss: 4.203914165496826
+epoch: 109, train_loss: 1.2497999668121338, train_acc: 95.09, train_fscore: 95.08, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.20389986038208, test_acc: 69.87, test_fscore: 70.13, time: 3.56 sec
+loss: 1.2016477584838867
+loss: 1.2464441061019897
+loss: 4.1859130859375
+epoch: 110, train_loss: 1.2236000299453735, train_acc: 94.94, train_fscore: 94.91, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.1859002113342285, test_acc: 70.73, test_fscore: 71.0, time: 3.05 sec
+              precision    recall  f1-score   support
+
+           0     0.5126    0.7083    0.5948     144.0
+           1     0.8074    0.8041    0.8057     245.0
+           2     0.7136    0.7266    0.7200     384.0
+           3     0.6316    0.7059    0.6667     170.0
+           4     0.8659    0.7124    0.7817     299.0
+           5     0.6912    0.6404    0.6649     381.0
+
+    accuracy                         0.7116    1623.0
+   macro avg     0.7037    0.7163    0.7056    1623.0
+weighted avg     0.7241    0.7116    0.7147    1623.0
+
+[[102.   3.  14.   0.  24.   1.]
+ [  3. 197.  14.   4.   1.  26.]
+ [ 36.  21. 279.   5.   3.  40.]
+ [  0.   6.   6. 120.   0.  38.]
+ [ 55.   1.  25.   1. 213.   4.]
+ [  3.  16.  53.  60.   5. 244.]]
+loss: 1.2585254907608032
+loss: 1.1631145477294922
+loss: 4.184535980224609
+epoch: 111, train_loss: 1.2158000469207764, train_acc: 95.2, train_fscore: 95.18, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.184500217437744, test_acc: 70.06, test_fscore: 70.32, time: 3.14 sec
+loss: 1.2593015432357788
+loss: 1.128159523010254
+loss: 4.251927375793457
+epoch: 112, train_loss: 1.1998000144958496, train_acc: 95.06, train_fscore: 95.04, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.2519001960754395, test_acc: 70.06, test_fscore: 70.26, time: 2.98 sec
+loss: 1.230275273323059
+loss: 1.1804720163345337
+loss: 4.2017292976379395
+epoch: 113, train_loss: 1.2069000005722046, train_acc: 95.28, train_fscore: 95.26, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.201700210571289, test_acc: 70.43, test_fscore: 70.56, time: 2.58 sec
+loss: 1.255378007888794
+loss: 1.1479007005691528
+loss: 4.240833282470703
+epoch: 114, train_loss: 1.2041000127792358, train_acc: 95.61, train_fscore: 95.6, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.240799903869629, test_acc: 70.67, test_fscore: 71.03, time: 2.91 sec
+loss: 1.140484094619751
+loss: 1.1874699592590332
+loss: 4.3851637840271
+epoch: 115, train_loss: 1.1627000570297241, train_acc: 95.61, train_fscore: 95.59, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.385200023651123, test_acc: 69.56, test_fscore: 69.84, time: 2.71 sec
+loss: 1.1590021848678589
+loss: 1.2037259340286255
+loss: 4.403799533843994
+epoch: 116, train_loss: 1.1792000532150269, train_acc: 95.52, train_fscore: 95.51, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.403800010681152, test_acc: 69.5, test_fscore: 69.83, time: 2.57 sec
+loss: 1.134009599685669
+loss: 1.1953768730163574
+loss: 4.33708381652832
+epoch: 117, train_loss: 1.1627999544143677, train_acc: 95.97, train_fscore: 95.97, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.337100028991699, test_acc: 69.44, test_fscore: 69.8, time: 2.66 sec
+loss: 1.1473251581192017
+loss: 1.1705209016799927
+loss: 4.354155540466309
+epoch: 118, train_loss: 1.1581000089645386, train_acc: 95.34, train_fscore: 95.3, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.3541998863220215, test_acc: 70.49, test_fscore: 70.77, time: 4.13 sec
+loss: 1.1251246929168701
+loss: 1.1803984642028809
+loss: 4.375349044799805
+epoch: 119, train_loss: 1.1497000455856323, train_acc: 95.94, train_fscore: 95.93, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.37529993057251, test_acc: 69.87, test_fscore: 70.18, time: 4.16 sec
+loss: 1.2474844455718994
+loss: 1.0636589527130127
+loss: 4.432108402252197
+epoch: 120, train_loss: 1.1628999710083008, train_acc: 95.32, train_fscore: 95.3, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.43209981918335, test_acc: 69.93, test_fscore: 70.18, time: 2.83 sec
+              precision    recall  f1-score   support
+
+           0     0.5126    0.7083    0.5948     144.0
+           1     0.8074    0.8041    0.8057     245.0
+           2     0.7136    0.7266    0.7200     384.0
+           3     0.6316    0.7059    0.6667     170.0
+           4     0.8659    0.7124    0.7817     299.0
+           5     0.6912    0.6404    0.6649     381.0
+
+    accuracy                         0.7116    1623.0
+   macro avg     0.7037    0.7163    0.7056    1623.0
+weighted avg     0.7241    0.7116    0.7147    1623.0
+
+[[102.   3.  14.   0.  24.   1.]
+ [  3. 197.  14.   4.   1.  26.]
+ [ 36.  21. 279.   5.   3.  40.]
+ [  0.   6.   6. 120.   0.  38.]
+ [ 55.   1.  25.   1. 213.   4.]
+ [  3.  16.  53.  60.   5. 244.]]
+loss: 1.177208662033081
+loss: 1.1283581256866455
+loss: 4.359004497528076
+epoch: 121, train_loss: 1.1535999774932861, train_acc: 95.85, train_fscore: 95.84, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.359000205993652, test_acc: 69.81, test_fscore: 70.07, time: 4.3 sec
+loss: 1.1335656642913818
+loss: 1.1616013050079346
+loss: 4.3423285484313965
+epoch: 122, train_loss: 1.1468000411987305, train_acc: 95.61, train_fscore: 95.59, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.342299938201904, test_acc: 70.55, test_fscore: 70.71, time: 4.19 sec
+loss: 1.1312129497528076
+loss: 1.1211222410202026
+loss: 4.552824020385742
+epoch: 123, train_loss: 1.1266000270843506, train_acc: 96.09, train_fscore: 96.08, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.552800178527832, test_acc: 70.36, test_fscore: 70.64, time: 4.32 sec
+loss: 1.1467292308807373
+loss: 1.0468977689743042
+loss: 4.447403907775879
+epoch: 124, train_loss: 1.1014000177383423, train_acc: 96.44, train_fscore: 96.43, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.447400093078613, test_acc: 69.32, test_fscore: 69.68, time: 4.24 sec
+loss: 1.0393270254135132
+loss: 1.15712308883667
+loss: 4.391914367675781
+epoch: 125, train_loss: 1.0938999652862549, train_acc: 95.68, train_fscore: 95.66, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.391900062561035, test_acc: 70.12, test_fscore: 70.42, time: 4.24 sec
+loss: 1.0915372371673584
+loss: 1.1316481828689575
+loss: 4.479537487030029
+epoch: 126, train_loss: 1.1098999977111816, train_acc: 96.28, train_fscore: 96.28, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.479499816894531, test_acc: 71.29, test_fscore: 71.53, time: 4.98 sec
+loss: 1.174721360206604
+loss: 0.9988892674446106
+loss: 4.500277519226074
+epoch: 127, train_loss: 1.0943000316619873, train_acc: 96.23, train_fscore: 96.22, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.50029993057251, test_acc: 70.3, test_fscore: 70.59, time: 2.84 sec
+loss: 1.0324420928955078
+loss: 1.137157678604126
+loss: 4.481391906738281
+epoch: 128, train_loss: 1.0813000202178955, train_acc: 95.61, train_fscore: 95.58, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.481400012969971, test_acc: 71.47, test_fscore: 71.76, time: 4.03 sec
+loss: 1.026554822921753
+loss: 1.1228243112564087
+loss: 4.537893772125244
+epoch: 129, train_loss: 1.0722999572753906, train_acc: 96.57, train_fscore: 96.57, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.537899971008301, test_acc: 70.55, test_fscore: 70.82, time: 4.06 sec
+loss: 1.0551743507385254
+loss: 1.1015969514846802
+loss: 4.783731460571289
+epoch: 130, train_loss: 1.0770000219345093, train_acc: 96.56, train_fscore: 96.55, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.783699989318848, test_acc: 69.69, test_fscore: 69.98, time: 4.42 sec
+              precision    recall  f1-score   support
+
+           0     0.5464    0.6944    0.6116     144.0
+           1     0.8545    0.7673    0.8086     245.0
+           2     0.6697    0.7656    0.7145     384.0
+           3     0.6667    0.6471    0.6567     170.0
+           4     0.8667    0.6957    0.7718     299.0
+           5     0.6915    0.6824    0.6869     381.0
+
+    accuracy                         0.7147    1623.0
+   macro avg     0.7159    0.7088    0.7084    1623.0
+weighted avg     0.7278    0.7147    0.7176    1623.0
+
+[[100.   2.  17.   0.  24.   1.]
+ [  3. 188.  24.   3.   0.  27.]
+ [ 27.  15. 294.   4.   3.  41.]
+ [  0.   3.  12. 110.   0.  45.]
+ [ 51.   2.  35.   1. 208.   2.]
+ [  2.  10.  57.  47.   5. 260.]]
+loss: 1.0851175785064697
+loss: 1.0249123573303223
+loss: 4.676948070526123
+epoch: 131, train_loss: 1.0568000078201294, train_acc: 96.45, train_fscore: 96.44, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.6768999099731445, test_acc: 70.98, test_fscore: 71.26, time: 3.64 sec
+loss: 1.075427770614624
+loss: 1.061915636062622
+loss: 4.533365726470947
+epoch: 132, train_loss: 1.069000005722046, train_acc: 96.8, train_fscore: 96.8, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.533400058746338, test_acc: 71.1, test_fscore: 71.29, time: 2.65 sec
+loss: 0.9973584413528442
+loss: 1.101759672164917
+loss: 4.742769718170166
+epoch: 133, train_loss: 1.0454000234603882, train_acc: 96.09, train_fscore: 96.07, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.742800235748291, test_acc: 70.12, test_fscore: 70.42, time: 2.69 sec
+loss: 1.025458812713623
+loss: 1.060142993927002
+loss: 4.799063682556152
+epoch: 134, train_loss: 1.0414999723434448, train_acc: 97.02, train_fscore: 97.02, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.799099922180176, test_acc: 70.73, test_fscore: 71.08, time: 2.86 sec
+loss: 1.019519329071045
+loss: 1.0421843528747559
+loss: 4.633645057678223
+epoch: 135, train_loss: 1.0305999517440796, train_acc: 96.85, train_fscore: 96.85, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.633600234985352, test_acc: 70.79, test_fscore: 70.95, time: 2.95 sec
+loss: 1.0370712280273438
+loss: 1.026346206665039
+loss: 4.681173324584961
+epoch: 136, train_loss: 1.0319000482559204, train_acc: 96.94, train_fscore: 96.92, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.68120002746582, test_acc: 70.3, test_fscore: 70.52, time: 2.52 sec
+loss: 1.0564621686935425
+loss: 0.9470530152320862
+loss: 4.958225250244141
+epoch: 137, train_loss: 1.0069999694824219, train_acc: 97.18, train_fscore: 97.17, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.958199977874756, test_acc: 69.44, test_fscore: 69.8, time: 2.45 sec
+loss: 1.0475212335586548
+loss: 0.9712151885032654
+loss: 4.72995138168335
+epoch: 138, train_loss: 1.0115000009536743, train_acc: 97.04, train_fscore: 97.04, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.730000019073486, test_acc: 70.92, test_fscore: 71.1, time: 2.74 sec
+loss: 0.9612892866134644
+loss: 1.0104790925979614
+loss: 4.573291301727295
+epoch: 139, train_loss: 0.9848999977111816, train_acc: 97.07, train_fscore: 97.06, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.573299884796143, test_acc: 71.66, test_fscore: 71.79, time: 1.99 sec
+loss: 0.9087616205215454
+loss: 1.0763107538223267
+loss: 4.652460098266602
+epoch: 140, train_loss: 0.9848999977111816, train_acc: 97.37, train_fscore: 97.36, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.652500152587891, test_acc: 71.35, test_fscore: 71.61, time: 1.62 sec
+              precision    recall  f1-score   support
+
+           0     0.5536    0.6458    0.5962     144.0
+           1     0.7672    0.8204    0.7929     245.0
+           2     0.7050    0.7344    0.7194     384.0
+           3     0.6627    0.6588    0.6608     170.0
+           4     0.8588    0.7324    0.7906     299.0
+           5     0.6938    0.6719    0.6827     381.0
+
+    accuracy                         0.7166    1623.0
+   macro avg     0.7068    0.7106    0.7071    1623.0
+weighted avg     0.7222    0.7166    0.7179    1623.0
+
+[[ 93.   6.  16.   0.  28.   1.]
+ [  3. 201.  14.   3.   0.  24.]
+ [ 24.  27. 282.   4.   2.  45.]
+ [  0.   9.   9. 112.   0.  40.]
+ [ 46.   2.  28.   1. 219.   3.]
+ [  2.  17.  51.  49.   6. 256.]]
+loss: 0.9899439811706543
+loss: 0.9944087862968445
+loss: 4.910327911376953
+epoch: 141, train_loss: 0.9922000169754028, train_acc: 97.47, train_fscore: 97.47, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.910299777984619, test_acc: 70.61, test_fscore: 70.95, time: 2.6 sec
+loss: 0.9688768982887268
+loss: 0.9902640581130981
+loss: 4.851597309112549
+epoch: 142, train_loss: 0.9789999723434448, train_acc: 97.78, train_fscore: 97.78, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.851600170135498, test_acc: 71.29, test_fscore: 71.5, time: 4.36 sec
+loss: 0.9075522422790527
+loss: 1.0313031673431396
+loss: 4.708037376403809
+epoch: 143, train_loss: 0.9679999947547913, train_acc: 97.4, train_fscore: 97.4, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.708000183105469, test_acc: 71.16, test_fscore: 71.3, time: 4.49 sec
+loss: 0.9984854459762573
+loss: 0.8987556099891663
+loss: 4.854818344116211
+epoch: 144, train_loss: 0.9505000114440918, train_acc: 97.4, train_fscore: 97.39, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.854800224304199, test_acc: 70.86, test_fscore: 71.11, time: 3.47 sec
+loss: 0.9802644848823547
+loss: 0.9144922494888306
+loss: 4.836345672607422
+epoch: 145, train_loss: 0.9495000243186951, train_acc: 97.62, train_fscore: 97.62, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.836299896240234, test_acc: 70.43, test_fscore: 70.68, time: 4.25 sec
+loss: 0.9450355172157288
+loss: 0.9275573492050171
+loss: 4.9687724113464355
+epoch: 146, train_loss: 0.9370999932289124, train_acc: 97.5, train_fscore: 97.5, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.968800067901611, test_acc: 70.49, test_fscore: 70.7, time: 4.28 sec
+loss: 0.9671605825424194
+loss: 0.9542380571365356
+loss: 5.042654514312744
+epoch: 147, train_loss: 0.9610999822616577, train_acc: 97.45, train_fscore: 97.45, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 5.042699813842773, test_acc: 70.24, test_fscore: 70.55, time: 4.52 sec
+loss: 0.9864173531532288
+loss: 0.9099785089492798
+loss: 4.9306745529174805
+epoch: 148, train_loss: 0.9491000175476074, train_acc: 97.66, train_fscore: 97.66, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.930699825286865, test_acc: 70.36, test_fscore: 70.68, time: 4.44 sec
+loss: 0.9173743724822998
+loss: 0.9139113426208496
+loss: 4.955305099487305
+epoch: 149, train_loss: 0.9157000184059143, train_acc: 97.85, train_fscore: 97.84, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.9552998542785645, test_acc: 70.92, test_fscore: 71.08, time: 4.23 sec
+loss: 0.9012433886528015
+loss: 0.950674295425415
+loss: 4.99638032913208
+epoch: 150, train_loss: 0.9240000247955322, train_acc: 97.93, train_fscore: 97.93, valid_loss: nan, valid_acc: nan, valid_fscore: nan, test_loss: 4.996399879455566, test_acc: 70.67, test_fscore: 70.89, time: 4.75 sec
+              precision    recall  f1-score   support
+
+           0     0.5536    0.6458    0.5962     144.0
+           1     0.7672    0.8204    0.7929     245.0
+           2     0.7050    0.7344    0.7194     384.0
+           3     0.6627    0.6588    0.6608     170.0
+           4     0.8588    0.7324    0.7906     299.0
+           5     0.6938    0.6719    0.6827     381.0
+
+    accuracy                         0.7166    1623.0
+   macro avg     0.7068    0.7106    0.7071    1623.0
+weighted avg     0.7222    0.7166    0.7179    1623.0
+
+[[ 93.   6.  16.   0.  28.   1.]
+ [  3. 201.  14.   3.   0.  24.]
+ [ 24.  27. 282.   4.   2.  45.]
+ [  0.   9.   9. 112.   0.  40.]
+ [ 46.   2.  28.   1. 219.   3.]
+ [  2.  17.  51.  49.   6. 256.]]
+Test performance..
+F-Score: 71.79
+F-Score-index: 139
+              precision    recall  f1-score   support
+
+           0     0.5536    0.6458    0.5962     144.0
+           1     0.7672    0.8204    0.7929     245.0
+           2     0.7050    0.7344    0.7194     384.0
+           3     0.6627    0.6588    0.6608     170.0
+           4     0.8588    0.7324    0.7906     299.0
+           5     0.6938    0.6719    0.6827     381.0
+
+    accuracy                         0.7166    1623.0
+   macro avg     0.7068    0.7106    0.7071    1623.0
+weighted avg     0.7222    0.7166    0.7179    1623.0
+
+[[ 93.   6.  16.   0.  28.   1.]
+ [  3. 201.  14.   3.   0.  24.]
+ [ 24.  27. 282.   4.   2.  45.]
+ [  0.   9.   9. 112.   0.  40.]
+ [ 46.   2.  28.   1. 219.   3.]
+ [  2.  17.  51.  49.   6. 256.]]

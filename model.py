@@ -6,13 +6,30 @@ import math
 
 
 class MaskedKLDivLoss(nn.Module):
-    def __init__(self):
+    def __init__(self, epsilon=1e-8):
         super(MaskedKLDivLoss, self).__init__()
-        self.loss = nn.KLDivLoss(reduction='sum')
+        self.epsilon = epsilon  # To avoid log(0)
 
     def forward(self, log_pred, target, mask):
-        mask_ = mask.view(-1, 1)
-        loss = self.loss(log_pred * mask_, target * mask_) / torch.sum(mask)   
+        """
+        log_pred: [batch_size * seq_len, num_classes] (log-softmax)
+        target:   [batch_size * seq_len, num_classes] (softmax)
+        mask:     [batch_size * seq_len] or [batch_size, seq_len]
+        """
+        # Flatten mask to match shape
+        if mask.dim() > 1:
+            mask = mask.view(-1)
+
+        # Apply softmax (if not already applied)
+        target = torch.clamp(target, min=self.epsilon)  # avoid log(0)
+        log_pred = torch.clamp(log_pred, min=-100, max=0)  # log_probs should be <= 0
+
+        # Compute KL per token (no reduction)
+        kl = F.kl_div(log_pred, target, reduction='none').sum(dim=1)  # [batch_size * seq_len]
+
+        # Mask and average
+        kl_masked = kl * mask  # Apply mask
+        loss = kl_masked.sum() / (mask.sum() + self.epsilon)
         return loss
 
 
@@ -286,6 +303,7 @@ class Transformer_Based_Model(nn.Module):
         spk_embeddings = self.speaker_embeddings(spk_idx)
 
         # Temporal convolutional layers
+        # print(textf.shape, acouf.shape, visuf.shape)
         textf = self.textf_input(textf.permute(1, 2, 0)).transpose(1, 2)
         acouf = self.acouf_input(acouf.permute(1, 2, 0)).transpose(1, 2)
         visuf = self.visuf_input(visuf.permute(1, 2, 0)).transpose(1, 2)
