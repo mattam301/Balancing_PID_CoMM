@@ -67,7 +67,7 @@ class CoMMLoss(nn.Module):
             acc.append((acc1 + acc2) / 2.)
             
             ## playground zone: try modality balancer loss
-            modal_loss.append((loss1 - loss2) * 1.0)  # This is a placeholder for the modality balancer loss
+            modal_loss.append(abs(loss1 - loss2) * 1.0)  # This is a placeholder for the modality balancer loss
         ssl_acc = {"ssl_acc_%i"%i: acc_ for i, acc_ in enumerate(acc)}
         losses = {"ssl_loss_%i"%i: l for i, l in enumerate(loss)}
         if self.weights is not None:
