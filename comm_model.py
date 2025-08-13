@@ -390,6 +390,17 @@ class Transformer_Based_Model(nn.Module):
         assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
             f"Augmented representation size {x_aug} does not match original size {x}"
         return x_aug
+    def autoencoder_augmentation(self, x):
+        feature_dim = x[0].size(-1)
+        bottleneck_dim = max(feature_dim // 2, 1)  # ensure >0
+        autoencoder = ModalityRepresentationAutoencoder(feature_dim, bottleneck_dim).to(x[0].device)
+        
+        x_aug = autoencoder(x)
+
+        assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+            f"Augmented representation size {x_aug} does not match original size {x}"
+        
+        return x_aug
     def forward(self, textf, visuf, acouf, u_mask, qmask, dia_len):
         spk_idx = torch.argmax(qmask, -1)
         origin_spk_idx = spk_idx
