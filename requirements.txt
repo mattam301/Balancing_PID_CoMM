@@ -2,3 +2,6 @@ torch
 numpy
 pandas
 scikit-learn
+pytorch_lightning
+comet_ml
+gdown
