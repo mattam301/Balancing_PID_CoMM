@@ -7,6 +7,43 @@ from mmfusion import MMFusion
 # from comm_loss import CoMMLoss # temporary comment
 from collections import OrderedDict
 
+class ModalityRepresentationAutoencoder(nn.Module):
+    def __init__(self, feature_dim, bottleneck_dim):
+        super().__init__()
+        # Encoder: n -> bottleneck
+        self.encoder = nn.Sequential(
+            nn.Linear(feature_dim, bottleneck_dim),
+            nn.ReLU(),
+            nn.Linear(bottleneck_dim, bottleneck_dim // 2),
+            nn.ReLU()
+        )
+        # Decoder: bottleneck -> n
+        self.decoder = nn.Sequential(
+            nn.Linear(bottleneck_dim // 2, bottleneck_dim),
+            nn.ReLU(),
+            nn.Linear(bottleneck_dim, feature_dim)
+        )
+
+    def forward(self, x):
+        x_aug = []
+        for x_i in x:
+            z = self.encoder(x_i)
+            recon = self.decoder(z)
+            x_aug.append(F.relu(recon))
+        return x_aug
+
+
+def autoencoder_augmentation(self, x):
+    feature_dim = x[0].size(-1)
+    bottleneck_dim = max(feature_dim // 2, 1)  # ensure >0
+    autoencoder = ModalityRepresentationAutoencoder(feature_dim, bottleneck_dim).to(x[0].device)
+    
+    x_aug = autoencoder(x)
+
+    assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+        f"Augmented representation size {x_aug} does not match original size {x}"
+    
+    return x_aug
 
 class MaskedKLDivLoss(nn.Module):
     def __init__(self, epsilon=1e-8):
@@ -296,8 +333,8 @@ class Transformer_Based_Model(nn.Module):
             )
         self.all_output_layer = nn.Linear(hidden_dim, n_classes)
         
-        self.augment_1 = self.modality_representation_augmentation
-        self.augment_2 = self.modality_representation_augmentation
+        self.augment_1 = self.autoencoder_augmentation
+        self.augment_2 = self.autoencoder_augmentation
         self.comm_enc = comm_fuse
         self.head = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim),
