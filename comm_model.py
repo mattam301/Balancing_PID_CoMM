@@ -341,7 +341,7 @@ class Transformer_Based_Model(nn.Module):
         assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
             f"Augmented representation size {x_aug} does not match original size {x}"
         # # Using a ReLU activation function to introduce non-linearity
-        # x_aug = F.relu(x_aug)
+        x_aug = [F.relu(x_aug_i) for x_aug_i in x_aug]
         # Returning the augmented representation
         # This is a simple augmentation, more complex methods can be used
         # depending on the task and the data.
