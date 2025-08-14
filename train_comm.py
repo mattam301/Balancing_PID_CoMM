@@ -358,6 +358,7 @@ if __name__ == '__main__':
 
         import copy
         if best_fscore == None or best_fscore < valid_fscore:
+            print("Updating best model states")
             best_fscore = valid_fscore
             best_model_state = copy.deepcopy(model.state_dict())
             best_fscore = test_fscore
