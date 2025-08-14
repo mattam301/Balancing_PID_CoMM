@@ -358,10 +358,9 @@ if __name__ == '__main__':
 
         import copy
         if best_fscore == None or best_fscore < valid_fscore:
-            print("Updating best model states")
+            print("Updating best model states with valid_fscore: {}".format(valid_fscore))
             best_fscore = valid_fscore
             best_model_state = copy.deepcopy(model.state_dict())
-            best_fscore = test_fscore
             best_label, best_pred, best_mask = test_label, test_pred, test_mask
         if args.tensorboard:
             writer.add_scalar('test: accuracy', test_acc, e)
