@@ -265,7 +265,7 @@ class Multimodal_GatedFusion(nn.Module):
 class Transformer_Based_Model(nn.Module):
     
     def __init__(self, dataset, temp, D_text, D_visual, D_audio, n_head,
-                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion):
+                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion, augmentation_style: str):
         super(Transformer_Based_Model, self).__init__()
         self.temp = temp
         self.head = projection
@@ -333,8 +333,15 @@ class Transformer_Based_Model(nn.Module):
             )
         self.all_output_layer = nn.Linear(hidden_dim, n_classes)
         
-        self.augment_1 = self.autoencoder_augmentation
-        self.augment_2 = self.autoencoder_augmentation
+        if augmentation_style == "autoencoder":
+            self.augment_1 = self.autoencoder_augmentation
+            self.augment_2 = self.autoencoder_augmentation
+        elif augmentation_style == "linear":
+            self.augment_1 = self.modality_representation_linear_augmentation
+            self.augment_2 = self.modality_representation_linear_augmentation
+        elif augmentation_style == "gaussian":
+            self.augment_1 = self.modality_representation_gaussian_augmentation
+            self.augment_2 = self.modality_representation_gaussian_augmentation
         self.comm_enc = comm_fuse
         self.head = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim),
@@ -369,7 +376,7 @@ class Transformer_Based_Model(nn.Module):
             masks.append(mask)
         masks.append([True for _ in range(n_mod)])
         return masks
-    def modality_representation_augmentation(self, x):
+    def modality_representation_linear_augmentation(self, x):
         # Using a simple Linear layer to augment the representation and return a new representation of the same shape
         # making sure all tensors are on the same device
         # print(x[0].device)
@@ -383,9 +390,9 @@ class Transformer_Based_Model(nn.Module):
         # This is a simple augmentation, more complex methods can be used
         # depending on the task and the data.
         return x_aug
-    def modality_representation_augmentation_2(self, x):
+    def modality_representation_gaussian_augmentation(self, x):
         # Instead of using Linear layer, apply a random Gaussian noise to the representation
-        noise_std = 0.1  # Standard deviation of the Gaussian noise
+        noise_std = 0.8  # Standard deviation of the Gaussian noise
         x_aug = [x_i + torch.randn_like(x_i) * noise_std for x_i in x]
         assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
             f"Augmented representation size {x_aug} does not match original size {x}"
@@ -394,12 +401,9 @@ class Transformer_Based_Model(nn.Module):
         feature_dim = x[0].size(-1)
         bottleneck_dim = max(feature_dim // 2, 1)  # ensure >0
         autoencoder = ModalityRepresentationAutoencoder(feature_dim, bottleneck_dim).to(x[0].device)
-        
         x_aug = autoencoder(x)
-
         assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
             f"Augmented representation size {x_aug} does not match original size {x}"
-        
         return x_aug
     def forward(self, textf, visuf, acouf, u_mask, qmask, dia_len):
         spk_idx = torch.argmax(qmask, -1)

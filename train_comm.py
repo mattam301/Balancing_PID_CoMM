@@ -18,7 +18,7 @@ from comet_ml import Experiment
 # Create an experiment with your Comet API key
 experiment = Experiment(
     api_key="Fd1aGmcly8SdDO5Ez4DMyCIt5",           # replace with your actual API key
-    project_name="comm-merc",     # or whatever project name you want
+    project_name="comm-sdt",     # or whatever project name you want
     workspace="mattam301",             # optional: your Comet workspace name
     auto_param_logging=True,
     auto_metric_logging=False,
@@ -221,6 +221,7 @@ if __name__ == '__main__':
     parser.add_argument('--loss_mask', type=str, default='1111',
                     help='5-bit string to select loss components: 1st - all_loss, 2nd - individual_losses, 3rd - KL loss, 4th - CoMM loss, 5th - modality balancer loss')
     parser.add_argument('--modality_balancer', action='store_true', default=False, help='use modality balancer to CoMM loss')
+    parser.add_argument('--augmentation_style', type=str, default='linear', help='style of augmentation to use')
     args = parser.parse_args()
     loss_mask = [bool(int(c)) for c in args.loss_mask]  # Converts "1011" -> [True, False, True, True]
     print('loss_mask:', loss_mask)
@@ -287,7 +288,7 @@ if __name__ == '__main__':
                                         n_classes=n_classes,
                                         hidden_dim=args.hidden_dim,
                                         n_speakers=n_speakers,
-                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse) # need to adjust for sure
+                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse, augmentation_style=args.augmentation_style) # need to adjust for sure
 
     total_params = sum(p.numel() for p in model.parameters())
     print('total parameters: {}'.format(total_params))
