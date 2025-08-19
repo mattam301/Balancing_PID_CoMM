@@ -59,7 +59,8 @@ class CoMMLoss(nn.Module):
         # Apply InfoNCE between a "prototype embedding" and all the others
         loss = []
         acc = []
-        modal_loss = []
+        modal_loss_beta = []
+        modal_loss_alpha = 0
         for i in range(n_emb):
             loss1, acc1 = self.infonce(z1[i], z2[prototype])
             loss2, acc2 = self.infonce(z2[i], z1[prototype])
@@ -67,7 +68,19 @@ class CoMMLoss(nn.Module):
             acc.append((acc1 + acc2) / 2.)
             
             ## playground zone: try modality balancer loss
-            modal_loss.append(abs(loss1 - loss2) * 1.0)  # This is a placeholder for the modality balancer loss
+            # modal_loss.append(abs(loss1 - loss2) * 1.0)  # This is a placeholder for the modality balancer loss
+            
+            if i != n_emb:
+                # except the last loop, loss = 1/2 (loss1 and loss2) is R + U_i
+                print(f"R + U_{i} estimated as {loss}")
+                modal_loss_beta.append(loss)
+            else:
+                # in the last loop, loss = 1/2 (loss1 and loss2) is R + S + \sigma U_i
+                modal_loss_alpha = loss
+                print("R + S + \sigma U_i estimated as {}".format(modal_loss_alpha))
+        # modal loss = modal_loss_alpha - \sigma * modal_loss_beta
+        modal_loss = modal_loss_alpha - torch.mean(torch.stack(modal_loss_beta))
+        
         ssl_acc = {"ssl_acc_%i"%i: acc_ for i, acc_ in enumerate(acc)}
         losses = {"ssl_loss_%i"%i: l for i, l in enumerate(loss)}
         if self.weights is not None:
@@ -75,7 +88,8 @@ class CoMMLoss(nn.Module):
         else:
             loss = torch.mean(torch.stack(loss))
         acc = torch.mean(torch.stack(acc))
-        return {"loss": loss, "ssl_acc": acc, **ssl_acc, **losses, "modal_loss": torch.mean(torch.stack(modal_loss))}
+        # return {"loss": loss, "ssl_acc": acc, **ssl_acc, **losses, "modal_loss": torch.mean(torch.stack(modal_loss))}
+        return {"loss": loss, "ssl_acc": acc, **ssl_acc, **losses, "modal_loss": modal_loss}
 
     def __str__(self):
         return "{}(temp={})".format(type(self).__name__, self.temperature)
