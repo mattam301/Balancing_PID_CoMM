@@ -271,7 +271,7 @@ class Transformer_Based_Model(nn.Module):
         self.head = projection
         self.n_classes = n_classes
         self.n_speakers = n_speakers
-        self.late_come = late_comm
+        self.late_comm = late_comm
         if self.n_speakers == 2:
             padding_idx = 2
         if self.n_speakers == 9:
