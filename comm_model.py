@@ -265,7 +265,7 @@ class Multimodal_GatedFusion(nn.Module):
 class Transformer_Based_Model(nn.Module):
     
     def __init__(self, dataset, temp, D_text, D_visual, D_audio, n_head,
-                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion, augmentation_style: str):
+                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion, augmentation_style: str, late_comm: bool):
         super(Transformer_Based_Model, self).__init__()
         self.temp = temp
         self.head = projection
@@ -420,6 +420,21 @@ class Transformer_Based_Model(nn.Module):
         textf = self.textf_input(textf.permute(1, 2, 0)).transpose(1, 2)
         acouf = self.acouf_input(acouf.permute(1, 2, 0)).transpose(1, 2)
         visuf = self.visuf_input(visuf.permute(1, 2, 0)).transpose(1, 2)
+        
+        # Zone for CoMM of early stage (Pre-cross modal)
+        if self.late_comm is False:
+            print("--Using CoMM in early step")
+            # Start from the raw feature embeddings
+            x = [textf, acouf, visuf]
+            x1 = self.augment_1(x)
+            x2 = self.augment_2(x)
+            all_masks = self.gen_all_possible_masks(len(x1))
+            
+            z1 = self.comm_enc(x1, mask_modalities=all_masks)
+            z2 = self.comm_enc(x2, mask_modalities=all_masks)
+            
+            z1 = [self.head(z) for z in z1]
+            z2 = [self.head(z) for z in z2]
 
         # Intra- and Inter-modal Transformers
         t_t_transformer_out = self.t_t(textf, textf, u_mask, spk_embeddings)
@@ -476,18 +491,20 @@ class Transformer_Based_Model(nn.Module):
         ## This section is for adding CoMM module
         # Augmenting the representations x1 = aug(x) with x is the representation of all modalities, separately
         # X is the list of representations of all 3 modalities, separately
-        x = [t_transformer_out, a_transformer_out, v_transformer_out]
-        x1 = self.augment_1(x)
-        x2 = self.augment_2(x)
-        # encoding (x1, all_masks) and (x2, all_masks) with all_masks being the masks for all modalities
-        all_masks = self.gen_all_possible_masks(len(x1))
-        # print("All masks length: ", len(all_masks))
-        # print("1 mask: ", len(all_masks[0]))
-        z1 = self.comm_enc(x1, mask_modalities=all_masks)
-        z2 = self.comm_enc(x2, mask_modalities=all_masks)
-        z1 = [self.head(z) for z in z1]                 
-        z2 = [self.head(z) for z in z2]
-       
+        if self.late_comm:
+            print("--Using CoMM in late step")
+            x = [t_transformer_out, a_transformer_out, v_transformer_out]
+            x1 = self.augment_1(x)
+            x2 = self.augment_2(x)
+            # encoding (x1, all_masks) and (x2, all_masks) with all_masks being the masks for all modalities
+            all_masks = self.gen_all_possible_masks(len(x1))
+            # print("All masks length: ", len(all_masks))
+            # print("1 mask: ", len(all_masks[0]))
+            z1 = self.comm_enc(x1, mask_modalities=all_masks)
+            z2 = self.comm_enc(x2, mask_modalities=all_masks)
+            z1 = [self.head(z) for z in z1]                 
+            z2 = [self.head(z) for z in z2]
+        
         
         # New all_log_prob, kl_all_prob
         # TODO: 
