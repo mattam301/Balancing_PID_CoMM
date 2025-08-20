@@ -164,10 +164,10 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
                 kl_loss(kl_lp_3, kl_p_all, umask)
             )
         if loss_mask[3]:  # Use CoMM loss
-            print("CoMM loss:", comm_loss_values["loss"].item())
+            # print("CoMM loss:", comm_loss_values["loss"].item())
             loss += gamma_4 * comm_loss_values["loss"]
         if loss_mask[4]:  # Use modality balancer loss
-            print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
+            # print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
             scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
             loss += (-1.0) * gamma_5 * scale * comm_loss_values["modal_loss"]
         lp_ = all_prob.view(-1, all_prob.size()[2])
