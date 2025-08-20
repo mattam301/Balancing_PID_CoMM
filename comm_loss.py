@@ -70,7 +70,7 @@ class CoMMLoss(nn.Module):
             ## playground zone: try modality balancer loss
             # modal_loss.append(abs(loss1 - loss2) * 1.0)  # This is a placeholder for the modality balancer loss
             
-            if i != n_emb:
+            if i != n_emb-1:
                 # except the last loop, loss = 1/2 (loss1 and loss2) is R + U_i
                 print(f"R + U_{i} estimated as {loss}")
                 modal_loss_beta.append(loss)
