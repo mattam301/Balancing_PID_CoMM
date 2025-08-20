@@ -72,11 +72,11 @@ class CoMMLoss(nn.Module):
             
             if i != n_emb-1:
                 # except the last loop, loss = 1/2 (loss1 and loss2) is R + U_i
-                print(f"R + U_{i} estimated as {loss}")
-                modal_loss_beta.append(loss)
+                print(f"R + U_{i} estimated as {(loss1 + loss2) / 2.}")
+                modal_loss_beta.append((loss1 + loss2) / 2.)
             else:
                 # in the last loop, loss = 1/2 (loss1 and loss2) is R + S + \sigma U_i
-                modal_loss_alpha = loss
+                modal_loss_alpha = (loss1 + loss2) / 2.
                 print("R + S + \sigma U_i estimated as {}".format(modal_loss_alpha))
         # modal loss = modal_loss_alpha - \sigma * modal_loss_beta
         modal_loss = modal_loss_alpha - torch.mean(torch.stack(modal_loss_beta))
