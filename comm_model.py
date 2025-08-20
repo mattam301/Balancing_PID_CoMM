@@ -424,7 +424,7 @@ class Transformer_Based_Model(nn.Module):
         
         # Zone for CoMM of early stage (Pre-cross modal)
         if self.late_comm is False:
-            print("--Using CoMM in early step")
+            # print("--Using CoMM in early step")
             # Start from the raw feature embeddings
             x = [textf, acouf, visuf]
             x1 = self.augment_1(x)
@@ -493,7 +493,7 @@ class Transformer_Based_Model(nn.Module):
         # Augmenting the representations x1 = aug(x) with x is the representation of all modalities, separately
         # X is the list of representations of all 3 modalities, separately
         if self.late_comm:
-            print("--Using CoMM in late step")
+            # print("--Using CoMM in late step")
             x = [t_transformer_out, a_transformer_out, v_transformer_out]
             x1 = self.augment_1(x)
             x2 = self.augment_2(x)
