@@ -11,6 +11,7 @@ class ModalityBranch(nn.Module):
         self.fc_shared2 = nn.Linear(in_dim, out_dim)
 
     def forward(self, x):
+        x = x.to(next(self.parameters()).device)
         y_hat   = self.fc_private(x)
         y_hat_1 = self.fc_shared1(x)
         y_hat_2 = self.fc_shared2(x)
@@ -26,7 +27,7 @@ class ThreeModalityModel(nn.Module):
         self.mod3 = ModalityBranch(in_dim, out_dim)
 
         # Final fusion layer
-        self.fusion = nn.Linear(out_dim * 10, final_dim)  
+        self.fusion = nn.Linear(9222, final_dim)  # temporary hard-coded
         # 9 outputs from modalities + 1 extra branch = 10
 
     def forward(self, x1, x2, x3, x_other):
@@ -41,11 +42,26 @@ class ThreeModalityModel(nn.Module):
 
 
         # Final fusion
+        all_mod_outs = all_mod_outs.to(next(self.parameters()).device)
+        x_other = x_other.to(next(self.parameters()).device)
         final_input = torch.cat([all_mod_outs, x_other], dim=-1)
         final_repr = self.fusion(final_input)
 
         return m1, m2, m3, final_repr
 
+
+def safe_cov(a, b):
+    # flatten batch and seq if needed
+    a = a.reshape(-1, a.shape[-1])  # [total_samples, dim]
+    b = b.reshape(-1, b.shape[-1])
+
+    # transpose to [dim, total_samples]
+    a = a.T
+    b = b.T
+
+    # concat along variables
+    x = torch.cat([a, b], dim=0)  # [2*dim, total_samples]
+    return torch.cov(x)
 
 def compute_corr_loss(m1, m2, m3):
     """
@@ -62,29 +78,30 @@ def compute_corr_loss(m1, m2, m3):
     m3_hat, m3_hat1, m3_hat2 = m3
 
     # ========== Uncorrelation loss ==========
-    # within-modality: independent vs shared
     unco_pairs = [
         (m1_hat, m1_hat1), (m1_hat, m1_hat2),
         (m2_hat, m2_hat1), (m2_hat, m2_hat2),
         (m3_hat, m3_hat1), (m3_hat, m3_hat2)
     ]
-    L_unco = sum(torch.mean(torch.abs(torch.cov(torch.cat([a.T, b.T], dim=0))[0, 1])) for a, b in unco_pairs) / len(unco_pairs)
+
+    L_unco = sum(
+        torch.mean(torch.abs(safe_cov(a, b)[0, 1]))
+        for a, b in unco_pairs
+    ) / len(unco_pairs)
 
     # ========== Cross-modal correlation loss ==========
-    # matching shared heads across modalities
     cross_pairs = [
         (m1_hat1, m2_hat1),
         (m1_hat2, m3_hat1),
         (m2_hat2, m3_hat2)
     ]
+
     cor_terms = []
     for a, b in cross_pairs:
-        # covariance matrix
-        cov = torch.cov(torch.cat([a.T, b.T], dim=0))
+        cov = safe_cov(a, b)
         cov_ab = cov[0, 1]
         var_a = cov[0, 0]
         var_b = cov[1, 1]
-
         cor_terms.append((-1.0) * cov_ab + 0.5 * var_a * var_b)
 
     L_cor = sum(cor_terms) / len(cor_terms)

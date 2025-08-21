@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 from mmfusion import MMFusion
-from smurf_decomp import ThreeModalityModel
+from smurf_decomp import ThreeModalityModel, compute_corr_loss
 # from comm_loss import CoMMLoss # temporary comment
 from collections import OrderedDict
 
@@ -472,7 +472,7 @@ class Transformer_Based_Model(nn.Module):
         if self.use_smurf:
             smurf_model = ThreeModalityModel(in_dim=textf.size(-1), out_dim=textf.size(-1), final_dim=all_final_out.size(-1))
             m1, m2, m3, all_final_out = smurf_model(textf, acouf, visuf, all_final_out)
-            corr_loss, L_unco, L_cor = smurf_model.compute_corr_loss(m1, m2, m3)
+            corr_loss, L_unco, L_cor = compute_corr_loss(m1, m2, m3)
 
 
         t_log_prob = F.log_softmax(t_final_out, 2)
