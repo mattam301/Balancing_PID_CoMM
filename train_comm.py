@@ -14,11 +14,12 @@ import datetime
 from mmfusion import MMFusion
 from comm_loss import CoMMLoss
 from comet_ml import Experiment
+from smurf_decomp import ThreeModalityModel
 
 # Create an experiment with your Comet API key
 experiment = Experiment(
     api_key="Fd1aGmcly8SdDO5Ez4DMyCIt5",           # replace with your actual API key
-    project_name="comm-sdt-(late or early)",     # or whatever project name you want
+    project_name="comm-smurf-sdt",     # or whatever project name you want
     workspace="mattam301",             # optional: your Comet workspace name
     auto_param_logging=True,
     auto_metric_logging=False,
@@ -121,7 +122,7 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
         lengths = [(umask[j] == 1).nonzero().tolist()[-1][0] + 1 for j in range(len(umask))]
 
         log_prob1, log_prob2, log_prob3, all_log_prob, all_prob, \
-        kl_log_prob1, kl_log_prob2, kl_log_prob3, kl_all_prob, z1, z2 = model(textf, visuf, acouf, umask, qmask, lengths)
+        kl_log_prob1, kl_log_prob2, kl_log_prob3, kl_all_prob, z1, z2, corr_loss = model(textf, visuf, acouf, umask, qmask, lengths)
 
         lp_1 = log_prob1.view(-1, log_prob1.size()[2])
         lp_2 = log_prob2.view(-1, log_prob2.size()[2])
@@ -141,6 +142,8 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
             "aug2_embed": z2,
             "prototype": prototype  # You need to define/select this somewhere
         })
+
+        # corr_loss, L_unco, L_cor = smurf_model.compute_corr_loss(m1, m2, m3)
         # print("comm_loss:", comm_loss_values)
         
         # print("loss checking...")
@@ -166,10 +169,11 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
         if loss_mask[3]:  # Use CoMM loss
             # print("CoMM loss:", comm_loss_values["loss"].item())
             loss += gamma_4 * comm_loss_values["loss"]
-        if loss_mask[4]:  # Use modality balancer loss
+        if loss_mask[4]:  # Use Smurf loss
             # print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
-            scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
-            loss += (-1.0) * gamma_5 * scale * comm_loss_values["modal_loss"]
+            # scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
+            loss += gamma_5 * corr_loss
+            print("Smurf loss added with the amount: ", corr_loss.item())
         lp_ = all_prob.view(-1, all_prob.size()[2])
 
         pred_ = torch.argmax(lp_,1)
@@ -225,6 +229,7 @@ if __name__ == '__main__':
     parser.add_argument('--modality_balancer', action='store_true', default=False, help='use modality balancer to CoMM loss')
     parser.add_argument('--augmentation_style', type=str, default='linear', help='style of augmentation to use')
     parser.add_argument('--late_comm', action='store_true', default=False, help='use late comm loss, either comm is applied in early stage (pre-cross modal)')
+    parser.add_argument('--use_smurf', action='store_true', default=False, help='use SMURF decomposition')
     args = parser.parse_args()
     loss_mask = [bool(int(c)) for c in args.loss_mask]  # Converts "1011" -> [True, False, True, True]
     print('loss_mask:', loss_mask)
@@ -291,7 +296,7 @@ if __name__ == '__main__':
                                         n_classes=n_classes,
                                         hidden_dim=args.hidden_dim,
                                         n_speakers=n_speakers,
-                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse, augmentation_style=args.augmentation_style, late_comm=args.late_comm) # need to adjust for sure
+                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse, augmentation_style=args.augmentation_style, late_comm=args.late_comm, use_smurf=args.use_smurf) # need to adjust for sure
 
     total_params = sum(p.numel() for p in model.parameters())
     print('total parameters: {}'.format(total_params))
@@ -403,24 +408,4 @@ if __name__ == '__main__':
     print('F-Score: {}'.format(test_fscore))
     print('Accuracy: {}'.format(test_acc))
     print('Loss: {}'.format(test_loss))
-    # print('F-Score-index: {}'.format(all_fscore.index(max(all_fscore)) + 1))
     
-    # if not os.path.exists("record_{}_{}_{}.pk".format(today.year, today.month, today.day)):
-    #     with open("record_{}_{}_{}.pk".format(today.year, today.month, today.day),'wb') as f:
-    #         pk.dump({}, f)
-    # with open("record_{}_{}_{}.pk".format(today.year, today.month, today.day), 'rb') as f:
-    #     record = pk.load(f)
-    # key_ = 'name_'
-    # if record.get(key_, False):
-    #     record[key_].append(max(all_fscore))
-    # else:
-    #     record[key_] = [max(all_fscore)]
-    # if record.get(key_+'record', False):
-    #     record[key_+'record'].append(classification_report(best_label, best_pred, sample_weight=best_mask,digits=4))
-    # else:
-    #     record[key_+'record'] = [classification_report(best_label, best_pred, sample_weight=best_mask,digits=4)]
-    # with open("record_{}_{}_{}.pk".format(today.year, today.month, today.day),'wb') as f:
-    #     pk.dump(record, f)
-
-    # print(classification_report(best_label, best_pred, sample_weight=best_mask,digits=4))
-    # print(confusion_matrix(best_label,best_pred,sample_weight=best_mask))
