@@ -104,7 +104,7 @@ def get_OLD_IEMOCAP_loaders(batch_size=32, valid=0.1, num_workers=0, pin_memory=
 
 
 
-def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, epoch, optimizer=None, train=False, gamma_1=1.0, gamma_2=1.0, gamma_3=2, gamma_4=1.0, gamma_5=0.5): # prevent gradient explosion
+def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, epoch, optimizer=None, train=False, gamma_1=1.0, gamma_2=1.0, gamma_3=2.0, gamma_4=1.0, gamma_5=3): # prevent gradient explosion
     losses, preds, labels, masks = [], [], [], []
 
     assert not train or optimizer!=None
@@ -173,7 +173,7 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
             # print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
             # scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
             loss += gamma_5 * corr_loss.item()
-            print("Smurf loss:", corr_loss.item())
+            # print("Smurf loss:", corr_loss.item())
         lp_ = all_prob.view(-1, all_prob.size()[2])
 
         pred_ = torch.argmax(lp_,1)

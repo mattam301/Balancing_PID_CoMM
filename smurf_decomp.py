@@ -27,7 +27,7 @@ class ThreeModalityModel(nn.Module):
         self.mod3 = ModalityBranch(in_dim, out_dim)
 
         # Final fusion layer
-        self.fusion = nn.Linear(out_dim*10, final_dim)  # temporary hard-coded
+        self.fusion = nn.Linear(out_dim*2, final_dim)  
         # 9 outputs from modalities + 1 extra branch = 10
 
     def forward(self, x1, x2, x3, x_other):
@@ -36,10 +36,8 @@ class ThreeModalityModel(nn.Module):
         m2 = self.mod2(x2)
         m3 = self.mod3(x3)
 
-        # Flatten all outputs
-        all_mod_outs = torch.cat([*m1, *m2, *m3], dim=-1)  # 9 vectors concat
-
-
+        # summing all output
+        all_mod_outs = m1[0] + m1[1] + m1[2] + m2[0] + m2[1] + m2[2] + m3[0] + m3[1] + m3[2]
 
         # Final fusion
         all_mod_outs = all_mod_outs.to(next(self.parameters()).device)

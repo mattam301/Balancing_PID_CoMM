@@ -285,6 +285,14 @@ class Transformer_Based_Model(nn.Module):
             print("--Using CoMM in late step")
         else:
             print("--Using CoMM in early step")
+        if self.use_smurf:
+            self.smurf_model = ThreeModalityModel(
+                in_dim=hidden_dim,     
+                out_dim=hidden_dim,
+                final_dim=n_classes
+            )
+        else:
+            self.smurf_model = None
         if self.n_speakers == 2:
             padding_idx = 2
         if self.n_speakers == 9:
@@ -481,21 +489,12 @@ class Transformer_Based_Model(nn.Module):
         # print(device)
 
         if self.use_smurf:
-            smurf_model = ThreeModalityModel(
-                in_dim=textf.size(-1),
-                out_dim=textf.size(-1),
-                final_dim=self.n_classes
-            ).to(device)
-
-            m1, m2, m3, all_final_out = smurf_model(
-                textf.to(device),
-                acouf.to(device),
-                visuf.to(device),
-                all_transformer_out.to(device)
+            m1, m2, m3, all_final_out = self.smurf_model(
+                textf, acouf, visuf, all_transformer_out
             )
             corr_loss, L_unco, L_cor = compute_corr_loss(m1, m2, m3)
         else:
-            corr_loss = 0
+            corr_loss = torch.tensor(0.0, device=device)
 
         t_log_prob = F.log_softmax(t_final_out, 2)
         a_log_prob = F.log_softmax(a_final_out, 2)
