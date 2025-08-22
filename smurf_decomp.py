@@ -27,7 +27,7 @@ class ThreeModalityModel(nn.Module):
         self.mod3 = ModalityBranch(in_dim, out_dim)
 
         # Final fusion layer
-        self.fusion = nn.Linear(9222, final_dim)  # temporary hard-coded
+        self.fusion = nn.Linear(out_dim*10, final_dim)  # temporary hard-coded
         # 9 outputs from modalities + 1 extra branch = 10
 
     def forward(self, x1, x2, x3, x_other):

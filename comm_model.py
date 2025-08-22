@@ -66,6 +66,10 @@ class MaskedKLDivLoss(nn.Module):
         log_pred = torch.clamp(log_pred, min=-100, max=0)  # log_probs should be <= 0
 
         # Compute KL per token (no reduction)
+        # check devices
+        # print(log_pred.device, target.device)
+        # hard-coded
+        target = target.to(log_pred.device)
         kl = F.kl_div(log_pred, target, reduction='none').sum(dim=1)  # [batch_size * seq_len]
 
         # Mask and average
@@ -82,6 +86,9 @@ class MaskedNLLLoss(nn.Module):
 
     def forward(self, pred, target, mask):
         mask_ = mask.view(-1, 1)
+        # make sure all are on the same device
+        pred = pred.to(mask_.device)
+        target = target.to(mask_.device)
         if type(self.weight) == type(None):
             loss = self.loss(pred * mask_, target) / torch.sum(mask)
         else:
@@ -355,6 +362,7 @@ class Transformer_Based_Model(nn.Module):
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim)
         )
+
     @staticmethod
     def _build_mlp(in_dim, mlp_dim, out_dim):
         return nn.Sequential(OrderedDict([
@@ -469,11 +477,25 @@ class Transformer_Based_Model(nn.Module):
         
         ## This is another section to use SMURF decomposition
         # TODO: using SMURF Three_modal_model to: (1) Update final representations, (2) output smurf loss
-        if self.use_smurf:
-            smurf_model = ThreeModalityModel(in_dim=textf.size(-1), out_dim=textf.size(-1), final_dim=all_final_out.size(-1))
-            m1, m2, m3, all_final_out = smurf_model(textf, acouf, visuf, all_final_out)
-            corr_loss, L_unco, L_cor = compute_corr_loss(m1, m2, m3)
+        device = next(self.parameters()).device  # get the device of current model
+        # print(device)
 
+        if self.use_smurf:
+            smurf_model = ThreeModalityModel(
+                in_dim=textf.size(-1),
+                out_dim=textf.size(-1),
+                final_dim=self.n_classes
+            ).to(device)
+
+            m1, m2, m3, all_final_out = smurf_model(
+                textf.to(device),
+                acouf.to(device),
+                visuf.to(device),
+                all_transformer_out.to(device)
+            )
+            corr_loss, L_unco, L_cor = compute_corr_loss(m1, m2, m3)
+        else:
+            corr_loss = 0
 
         t_log_prob = F.log_softmax(t_final_out, 2)
         a_log_prob = F.log_softmax(a_final_out, 2)

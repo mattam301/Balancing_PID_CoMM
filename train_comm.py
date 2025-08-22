@@ -172,8 +172,8 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
         if loss_mask[4]:  # Use Smurf loss
             # print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
             # scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
-            loss += gamma_5 * corr_loss
-            print("Smurf loss added with the amount: ", corr_loss.item())
+            loss += gamma_5 * corr_loss.item()
+            print("Smurf loss:", corr_loss.item())
         lp_ = all_prob.view(-1, all_prob.size()[2])
 
         pred_ = torch.argmax(lp_,1)
