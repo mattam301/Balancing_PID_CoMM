@@ -46,7 +46,7 @@ def get_MELD_loaders(batch_size=32, valid=0.1, num_workers=0, pin_memory=False):
                               num_workers=num_workers,
                               pin_memory=pin_memory)
 
-    testset = MELDDataset('data/meld_multimodal_features.pkl', train=False)
+    testset = MELDDataset('data/meld_multi_features.pkl', train=False)
     test_loader = DataLoader(testset,
                              batch_size=batch_size,
                              collate_fn=testset.collate_fn,
@@ -312,7 +312,7 @@ if __name__ == '__main__':
 
     if args.Dataset == 'MELD':
         loss_function = MaskedNLLLoss()
-        train_loader, valid_loader, test_loader = get_MELD_loaders(valid=0.0,
+        train_loader, valid_loader, test_loader = get_MELD_loaders(valid=0.1,
                                                                     batch_size=batch_size,
                                                                     num_workers=0)
     elif args.Dataset == 'IEMOCAP':
@@ -365,7 +365,7 @@ if __name__ == '__main__':
         }, step=e)
 
         import copy
-        if best_fscore == None or best_fscore < valid_fscore and e > 70: # warm-up for 70 epochs, avoid overfitting
+        if best_fscore == None or best_fscore < valid_fscore and e > 70: # warm-up for 70 epochs, avoid 
             print("Updating best model states with valid_fscore: {}".format(valid_fscore))
             best_fscore = valid_fscore
             best_model_state = copy.deepcopy(model.state_dict())
