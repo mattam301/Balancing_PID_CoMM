@@ -122,7 +122,7 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
         lengths = [(umask[j] == 1).nonzero().tolist()[-1][0] + 1 for j in range(len(umask))]
 
         log_prob1, log_prob2, log_prob3, all_log_prob, all_prob, \
-        kl_log_prob1, kl_log_prob2, kl_log_prob3, kl_all_prob, z1, z2, corr_loss = model(textf, visuf, acouf, umask, qmask, lengths)
+        kl_log_prob1, kl_log_prob2, kl_log_prob3, kl_all_prob, z1, z2, corr_loss, comm_true_out = model(textf, visuf, acouf, umask, qmask, lengths)
 
         lp_1 = log_prob1.view(-1, log_prob1.size()[2])
         lp_2 = log_prob2.view(-1, log_prob2.size()[2])
@@ -365,7 +365,7 @@ if __name__ == '__main__':
         }, step=e)
 
         import copy
-        if best_fscore == None or best_fscore < valid_fscore:
+        if best_fscore == None or best_fscore < valid_fscore and e > 70: # warm-up for 70 epochs, avoid overfitting
             print("Updating best model states with valid_fscore: {}".format(valid_fscore))
             best_fscore = valid_fscore
             best_model_state = copy.deepcopy(model.state_dict())
