@@ -275,14 +275,16 @@ class Multimodal_GatedFusion(nn.Module):
 class Transformer_Based_Model(nn.Module):
     
     def __init__(self, dataset, temp, D_text, D_visual, D_audio, n_head,
-                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion, augmentation_style: str, late_comm: bool, use_smurf: bool):
+                 n_classes, hidden_dim, n_speakers, dropout, projection: nn.Module, comm_fuse: MMFusion, augmentation_style: str, late_comm: bool, use_comm, use_smurf: bool):
         super(Transformer_Based_Model, self).__init__()
         self.temp = temp
         self.head = projection
         self.n_classes = n_classes
         self.n_speakers = n_speakers
+        self.use_comm = use_comm
         self.late_comm = late_comm
         self.use_smurf = use_smurf
+        # calculate additional dimension for smurf module
         if self.late_comm:
             print("--Using CoMM in late step")
         else:
@@ -291,7 +293,8 @@ class Transformer_Based_Model(nn.Module):
             self.smurf_model = ThreeModalityModel(
                 in_dim=hidden_dim,     
                 out_dim=hidden_dim,
-                final_dim=n_classes
+                final_dim=n_classes,
+                use_comm=use_comm
             )
         else:
             self.smurf_model = None
@@ -373,7 +376,7 @@ class Transformer_Based_Model(nn.Module):
             nn.Linear(hidden_dim, hidden_dim)
         )
         from comm import CoMM
-
+        
         self.comm_module = CoMM(
             comm_enc=comm_fuse, 
             hidden_dim=hidden_dim, 
@@ -496,10 +499,11 @@ class Transformer_Based_Model(nn.Module):
         v_final_out = self.v_output_layer(v_transformer_out)
         all_final_out = self.all_output_layer(all_transformer_out)
         
-        # ## This section is for adding CoMM module     
-        if self.late_comm == False:   
-            z1, z2, all_transformer_out = self.comm_module(textf, acouf, visuf, all_transformer_out)
-            # all_final_out = self.all_output_layer_with_comm(all_transformer_out)
+        # ## This section is for adding CoMM module   
+        if self.use_comm:  
+            if self.late_comm == False:   
+                z1, z2, all_transformer_out = self.comm_module(textf, acouf, visuf, all_transformer_out)
+                # all_final_out = self.all_output_layer_with_comm(all_transformer_out)
         else:
             z1, z2 = None, None # hardcoded for now since there's no use yet
         ## This is another section to use SMURF decomposition

@@ -230,6 +230,7 @@ if __name__ == '__main__':
                     help='5-bit string to select loss components: 1st - all_loss, 2nd - individual_losses, 3rd - KL loss, 4th - CoMM loss, 5th - modality balancer loss')
     parser.add_argument('--modality_balancer', action='store_true', default=False, help='use modality balancer to CoMM loss')
     parser.add_argument('--augmentation_style', type=str, default='linear', help='style of augmentation to use')
+    parser.add_argument('--use_comm', action='store_true', default=False, help='use communication module')
     parser.add_argument('--late_comm', action='store_true', default=False, help='use late comm loss, either comm is applied in early stage (pre-cross modal)')
     parser.add_argument('--use_smurf', action='store_true', default=False, help='use SMURF decomposition')
     args = parser.parse_args()
@@ -298,7 +299,7 @@ if __name__ == '__main__':
                                         n_classes=n_classes,
                                         hidden_dim=args.hidden_dim,
                                         n_speakers=n_speakers,
-                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse, augmentation_style=args.augmentation_style, late_comm=args.late_comm, use_smurf=args.use_smurf) # need to adjust for sure
+                                        dropout=args.dropout, projection=Transformer_Based_Model._build_mlp(512, 512, 256), comm_fuse=comm_fuse, augmentation_style=args.augmentation_style, late_comm=args.late_comm, use_comm=args.use_comm, use_smurf=args.use_smurf) # need to adjust for sure
 
     total_params = sum(p.numel() for p in model.parameters())
     print('total parameters: {}'.format(total_params))

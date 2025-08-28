@@ -19,19 +19,16 @@ class ModalityBranch(nn.Module):
 
 
 class ThreeModalityModel(nn.Module):
-    def __init__(self, in_dim, out_dim, final_dim):
+    def __init__(self, in_dim, out_dim, final_dim, use_comm):
         super().__init__()
         # Three modality branches
         self.mod1 = ModalityBranch(in_dim, out_dim)
         self.mod2 = ModalityBranch(in_dim, out_dim)
         self.mod3 = ModalityBranch(in_dim, out_dim)
-
-        # Final fusion layer
-        if self.use_smurf == False:
-            self.fusion = nn.Linear(out_dim*2, final_dim)  
-        else:
+        if use_comm:
             self.fusion = nn.Linear(out_dim*3, final_dim)
-        # 9 outputs from modalities + 1 extra branch = 10
+        else: 
+            self.fusion = nn.Linear(out_dim*2, final_dim)
 
     def forward(self, x1, x2, x3, x_other):
         # Get modality-specific outputs
