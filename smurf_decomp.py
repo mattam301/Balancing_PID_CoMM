@@ -27,7 +27,10 @@ class ThreeModalityModel(nn.Module):
         self.mod3 = ModalityBranch(in_dim, out_dim)
 
         # Final fusion layer
-        self.fusion = nn.Linear(out_dim*2, final_dim)  
+        if self.use_smurf == False:
+            self.fusion = nn.Linear(out_dim*2, final_dim)  
+        else:
+            self.fusion = nn.Linear(out_dim*3, final_dim)
         # 9 outputs from modalities + 1 extra branch = 10
 
     def forward(self, x1, x2, x3, x_other):

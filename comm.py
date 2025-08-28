@@ -140,9 +140,9 @@ class CoMM(nn.Module):
             comm_true_out = self.comm_enc(x, mask_modalities=None)  # [B, D]
             comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)
             fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)
-            all_final_out = self.comm_fuse(fused_out)
+            # all_final_out = self.comm_fuse(fused_out)
         else:
             # Default to using just transformer output (e.g. late_comm)
-            all_final_out = self.comm_fuse(torch.cat([all_transformer_out, all_transformer_out], dim=-1))
-
-        return z1, z2, all_final_out
+            # all_final_out = self.comm_fuse(torch.cat([all_transformer_out, all_transformer_out], dim=-1))
+            pass
+        return z1, z2, fused_out
