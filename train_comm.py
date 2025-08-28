@@ -21,7 +21,7 @@ from comm import CoMM
 # Create an experiment with your Comet API key
 experiment = Experiment(
     api_key="Fd1aGmcly8SdDO5Ez4DMyCIt5",           # replace with your actual API key
-    project_name="comm-smurf-sdt",     # or whatever project name you want
+    project_name="comm-smurf-modulation",     # or whatever project name you want
     workspace="mattam301",             # optional: your Comet workspace name
     auto_param_logging=True,
     auto_metric_logging=False,
@@ -139,11 +139,13 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
         
         # if train:
         prototype = -1 # TODO: making use of different prototypes later
-        comm_loss_values = comm_loss({
-            "aug1_embed": z1,
-            "aug2_embed": z2,
-            "prototype": prototype  # You need to define/select this somewhere
-        })
+        if z1 != None:
+            comm_loss_values = comm_loss({
+                "aug1_embed": z1,
+                "aug2_embed": z2,
+                "prototype": prototype  # You need to define/select this somewhere
+            })
+        
 
         # corr_loss, L_unco, L_cor = smurf_model.compute_corr_loss(m1, m2, m3)
         # print("comm_loss:", comm_loss_values)
