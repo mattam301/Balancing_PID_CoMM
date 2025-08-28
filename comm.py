@@ -1,0 +1,148 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class ModalityRepresentationAutoencoder(nn.Module):
+    def __init__(self, feature_dim, bottleneck_dim):
+        super().__init__()
+        # Encoder: n -> bottleneck
+        self.encoder = nn.Sequential(
+            nn.Linear(feature_dim, bottleneck_dim),
+            nn.ReLU(),
+            nn.Linear(bottleneck_dim, bottleneck_dim // 2),
+            nn.ReLU()
+        )
+        # Decoder: bottleneck -> n
+        self.decoder = nn.Sequential(
+            nn.Linear(bottleneck_dim // 2, bottleneck_dim),
+            nn.ReLU(),
+            nn.Linear(bottleneck_dim, feature_dim)
+        )
+
+    def forward(self, x):
+        x_aug = []
+        for x_i in x:
+            z = self.encoder(x_i)
+            recon = self.decoder(z)
+            x_aug.append(F.relu(recon))
+        return x_aug
+
+
+def autoencoder_augmentation(self, x):
+    feature_dim = x[0].size(-1)
+    bottleneck_dim = max(feature_dim // 2, 1)  # ensure >0
+    autoencoder = ModalityRepresentationAutoencoder(feature_dim, bottleneck_dim).to(x[0].device)
+    
+    x_aug = autoencoder(x)
+
+    assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+        f"Augmented representation size {x_aug} does not match original size {x}"
+    
+    return x_aug
+class CoMM(nn.Module):
+    def __init__(self, comm_enc, hidden_dim, n_classes, augmentation_style="linear", late_comm=False):
+        """
+        CoMM module that can be plugged into any multimodal backbone.
+
+        Args:
+            comm_enc: the communication encoder (e.g., MMFusion or custom transformer)
+            hidden_dim: dimension of modality representations
+            n_classes: number of output classes
+            augmentation_style: "linear", "gaussian", or "autoencoder"
+            late_comm: if True, apply CoMM after cross-modal fusion; 
+                       else apply CoMM on raw modality embeddings (early)
+        """
+        super().__init__()
+        self.comm_enc = comm_enc
+        self.hidden_dim = hidden_dim
+        self.n_classes = n_classes
+        self.late_comm = late_comm
+
+        # Augmentation modules
+        if augmentation_style == "linear":
+            self.augment = nn.ModuleList([nn.Linear(hidden_dim, hidden_dim) for _ in range(3)])
+            self._augment_fn = self._linear_augment
+        elif augmentation_style == "gaussian":
+            self._augment_fn = self._gaussian_augment
+        elif augmentation_style == "autoencoder":
+            # lazy import to avoid circular deps
+            # from modality_autoencoder import ModalityRepresentationAutoencoder
+            self.autoencoders = nn.ModuleList(
+                [ModalityRepresentationAutoencoder(hidden_dim, hidden_dim // 2)]
+                for _ in range(3)
+            )
+            self._augment_fn = self._autoencoder_augment
+        else:
+            raise ValueError(f"Unknown augmentation style {augmentation_style}")
+
+        # Projection head for z1/z2
+        self.head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim)
+        )
+
+        # Fusion head for final output
+        self.comm_fuse = nn.Linear(2 * hidden_dim, n_classes)
+
+    @staticmethod
+    def gen_all_possible_masks(n_mod: int):
+        masks = []
+        for L in range(n_mod):
+            mask = [s == L for s in range(n_mod)]
+            masks.append(mask)
+        masks.append([True for _ in range(n_mod)])
+        return masks
+
+    # ---------- augmentation functions ----------
+    def _linear_augment(self, x):
+        return [F.relu(layer(x_i)) for x_i, layer in zip(x, self.augment)]
+
+    def _gaussian_augment(self, x, std=0.8):
+        return [x_i + torch.randn_like(x_i) * std for x_i in x]
+
+    def _autoencoder_augment(self, x):
+        return [auto(x_i) for x_i, auto in zip(x, self.autoencoders)]
+
+    # ---------- forward ----------
+    def forward(self, textf, acouf, visuf, all_transformer_out=None):
+        """
+        Args:
+            textf, acouf, visuf: [B, T, D] representations of modalities
+            all_transformer_out: [B, T, D] fused multimodal representation 
+                                 (required if late_comm=True)
+
+        Returns:
+            z1, z2, all_final_out
+        """
+        if self.late_comm:
+            # Late: use post-fusion features
+            if all_transformer_out is None:
+                raise ValueError("all_transformer_out is required for late_comm=True")
+            x = [textf, acouf, visuf]
+        else:
+            # Early: use raw projected features
+            x = [textf, acouf, visuf]
+
+        # Augment twice
+        x1 = self._augment_fn(x)
+        x2 = self._augment_fn(x)
+
+        # All masks
+        all_masks = self.gen_all_possible_masks(len(x))
+
+        # Encode with CoMM encoder
+        z1 = [self.head(z) for z in self.comm_enc(x1, mask_modalities=all_masks)]
+        z2 = [self.head(z) for z in self.comm_enc(x2, mask_modalities=all_masks)]
+
+        # If early_comm: add comm_true_out fusion
+        if not self.late_comm and all_transformer_out is not None:
+            comm_true_out = self.comm_enc(x, mask_modalities=None)  # [B, D]
+            comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)
+            fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)
+            all_final_out = self.comm_fuse(fused_out)
+        else:
+            # Default to using just transformer output (e.g. late_comm)
+            all_final_out = self.comm_fuse(torch.cat([all_transformer_out, all_transformer_out], dim=-1))
+
+        return z1, z2, all_final_out

@@ -8,6 +8,8 @@ from smurf_decomp import ThreeModalityModel, compute_corr_loss
 # from comm_loss import CoMMLoss # temporary comment
 from collections import OrderedDict
 
+
+
 class ModalityRepresentationAutoencoder(nn.Module):
     def __init__(self, feature_dim, bottleneck_dim):
         super().__init__()
@@ -370,6 +372,15 @@ class Transformer_Based_Model(nn.Module):
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim)
         )
+        from comm import CoMM
+
+        self.comm_module = CoMM(
+            comm_enc=comm_fuse, 
+            hidden_dim=hidden_dim, 
+            n_classes=n_classes, 
+            augmentation_style=augmentation_style, 
+            late_comm=self.late_comm
+        )
         # a layer for fusing all_transformer_out with comm_true_out
         # self.comm_fuse = # ???
 
@@ -485,40 +496,40 @@ class Transformer_Based_Model(nn.Module):
         v_final_out = self.v_output_layer(v_transformer_out)
         all_final_out = self.all_output_layer(all_transformer_out)
         
-        ## This section is for adding CoMM module
-        # Augmenting the representations x1 = aug(x) with x is the representation of all modalities, separately
-        # X is the list of representations of all 3 modalities, separately
-        if self.late_comm:
-            x = [t_transformer_out, a_transformer_out, v_transformer_out]
-            x1 = self.augment_1(x)
-            x2 = self.augment_2(x)
-            # encoding (x1, all_masks) and (x2, all_masks) with all_masks being the masks for all modalities
-            all_masks = self.gen_all_possible_masks(len(x1))
-            # print("All masks length: ", len(all_masks))
-            # print("1 mask: ", len(all_masks[0]))
-            z1 = self.comm_enc(x1, mask_modalities=all_masks)
-            z2 = self.comm_enc(x2, mask_modalities=all_masks)
-            z1 = [self.head(z) for z in z1]                 
-            z2 = [self.head(z) for z in z2]
-        # Zone for CoMM of early stage (Pre-cross modal)
-        elif self.late_comm is False:
-            # Start from the raw feature embeddings
-            x = [textf, acouf, visuf]
-            x1 = self.augment_1(x)
-            x2 = self.augment_2(x)
-            all_masks = self.gen_all_possible_masks(len(x1))
+        # ## This section is for adding CoMM module
+        # # Augmenting the representations x1 = aug(x) with x is the representation of all modalities, separately
+        # # X is the list of representations of all 3 modalities, separately
+        # if self.late_comm:
+        #     x = [t_transformer_out, a_transformer_out, v_transformer_out]
+        #     x1 = self.augment_1(x)
+        #     x2 = self.augment_2(x)
+        #     # encoding (x1, all_masks) and (x2, all_masks) with all_masks being the masks for all modalities
+        #     all_masks = self.gen_all_possible_masks(len(x1))
+        #     # print("All masks length: ", len(all_masks))
+        #     # print("1 mask: ", len(all_masks[0]))
+        #     z1 = self.comm_enc(x1, mask_modalities=all_masks)
+        #     z2 = self.comm_enc(x2, mask_modalities=all_masks)
+        #     z1 = [self.head(z) for z in z1]                 
+        #     z2 = [self.head(z) for z in z2]
+        # # Zone for CoMM of early stage (Pre-cross modal)
+        # elif self.late_comm is False:
+        #     # Start from the raw feature embeddings
+        #     x = [textf, acouf, visuf]
+        #     x1 = self.augment_1(x)
+        #     x2 = self.augment_2(x)
+        #     all_masks = self.gen_all_possible_masks(len(x1))
             
-            z1 = self.comm_enc(x1, mask_modalities=all_masks)
-            z2 = self.comm_enc(x2, mask_modalities=all_masks)
-            z1 = [self.head(z) for z in z1]
-            z2 = [self.head(z) for z in z2]
+        #     z1 = self.comm_enc(x1, mask_modalities=all_masks)
+        #     z2 = self.comm_enc(x2, mask_modalities=all_masks)
+        #     z1 = [self.head(z) for z in z1]
+        #     z2 = [self.head(z) for z in z2]
             
-            ## TODO: Adding the output of using comm_enc for x with no masks (WARNING: experimental zone)
-            comm_true_out = self.comm_enc(x, mask_modalities=None)
-            comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)  # [B, T, D]
-            fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)  # [B, T, 2D]
-            all_final_out = self.all_output_layer_with_comm(fused_out)
-
+        #     ## TODO: Adding the output of using comm_enc for x with no masks (WARNING: experimental zone)
+        #     comm_true_out = self.comm_enc(x, mask_modalities=None)
+        #     comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)  # [B, T, D]
+        #     fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)  # [B, T, 2D]
+        #     all_final_out = self.all_output_layer_with_comm(fused_out)
+        z1, z2, all_final_out = self.comm_module(textf, acouf, visuf, all_transformer_out)
         ## This is another section to use SMURF decomposition
         # TODO: using SMURF Three_modal_model to: (1) Update final representations, (2) output smurf loss
         device = next(self.parameters()).device  # get the device of current model

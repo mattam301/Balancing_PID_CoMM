@@ -16,6 +16,8 @@ from comm_loss import CoMMLoss
 from comet_ml import Experiment
 from smurf_decomp import ThreeModalityModel
 
+from comm import CoMM
+
 # Create an experiment with your Comet API key
 experiment = Experiment(
     api_key="Fd1aGmcly8SdDO5Ez4DMyCIt5",           # replace with your actual API key
