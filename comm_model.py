@@ -560,7 +560,7 @@ class Transformer_Based_Model(nn.Module):
 
         return t_log_prob, a_log_prob, v_log_prob, all_log_prob, all_prob, \
                kl_t_log_prob, kl_a_log_prob, kl_v_log_prob, kl_all_prob, \
-               z1, z2, corr_loss, comm_true_out
+               z1, z2, corr_loss
 
 
 
