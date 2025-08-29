@@ -87,15 +87,6 @@ class CoMM(nn.Module):
         masks.append([True for _ in range(n_mod)])
         return masks
 
-    # ---------- augmentation functions ----------
-    # def _linear_augment(self, x):
-    #     return [F.relu(layer(x_i)) for x_i, layer in zip(x, self.augment)]
-
-    # def _gaussian_augment(self, x, std=0.8):
-    #     return [x_i + torch.randn_like(x_i) * std for x_i in x]
-
-    # def _autoencoder_augment(self, x):
-    #     return [auto(x_i) for x_i, auto in zip(x, self.autoencoders)]
     def modality_representation_linear_augmentation(self, x):
         # Using a simple Linear layer to augment the representation and return a new representation of the same shape
         # making sure all tensors are on the same device
