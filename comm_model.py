@@ -488,7 +488,8 @@ class Transformer_Based_Model(nn.Module):
             corr_loss, L_unco, L_cor = compute_corr_loss(m1, m2, m3)
         else:
             corr_loss = torch.tensor(0.0, device=device)
-            all_final_out = self.all_output_layer_with_comm(all_transformer_out) 
+            if self.use_comm:
+                all_final_out = self.all_output_layer_with_comm(all_transformer_out) 
 
         t_log_prob = F.log_softmax(t_final_out, 2)
         a_log_prob = F.log_softmax(a_final_out, 2)
