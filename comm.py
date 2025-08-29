@@ -58,22 +58,15 @@ class CoMM(nn.Module):
         self.n_classes = n_classes
         self.late_comm = late_comm
 
-        # Augmentation modules
-        if augmentation_style == "linear":
-            self.augment = nn.ModuleList([nn.Linear(hidden_dim, hidden_dim) for _ in range(3)])
-            self._augment_fn = self._linear_augment
+        if augmentation_style == "autoencoder":
+            self.augment_1 = self.autoencoder_augmentation
+            self.augment_2 = self.autoencoder_augmentation
+        elif augmentation_style == "linear":
+            self.augment_1 = self.modality_representation_linear_augmentation
+            self.augment_2 = self.modality_representation_linear_augmentation
         elif augmentation_style == "gaussian":
-            self._augment_fn = self._gaussian_augment
-        elif augmentation_style == "autoencoder":
-            # lazy import to avoid circular deps
-            # from modality_autoencoder import ModalityRepresentationAutoencoder
-            self.autoencoders = nn.ModuleList(
-                [ModalityRepresentationAutoencoder(hidden_dim, hidden_dim // 2)]
-                for _ in range(3)
-            )
-            self._augment_fn = self._autoencoder_augment
-        else:
-            raise ValueError(f"Unknown augmentation style {augmentation_style}")
+            self.augment_1 = self.modality_representation_gaussian_augmentation
+            self.augment_2 = self.modality_representation_gaussian_augmentation
 
         # Projection head for z1/z2
         self.head = nn.Sequential(
@@ -95,15 +88,43 @@ class CoMM(nn.Module):
         return masks
 
     # ---------- augmentation functions ----------
-    def _linear_augment(self, x):
-        return [F.relu(layer(x_i)) for x_i, layer in zip(x, self.augment)]
+    # def _linear_augment(self, x):
+    #     return [F.relu(layer(x_i)) for x_i, layer in zip(x, self.augment)]
 
-    def _gaussian_augment(self, x, std=0.8):
-        return [x_i + torch.randn_like(x_i) * std for x_i in x]
+    # def _gaussian_augment(self, x, std=0.8):
+    #     return [x_i + torch.randn_like(x_i) * std for x_i in x]
 
-    def _autoencoder_augment(self, x):
-        return [auto(x_i) for x_i, auto in zip(x, self.autoencoders)]
-
+    # def _autoencoder_augment(self, x):
+    #     return [auto(x_i) for x_i, auto in zip(x, self.autoencoders)]
+    def modality_representation_linear_augmentation(self, x):
+        # Using a simple Linear layer to augment the representation and return a new representation of the same shape
+        # making sure all tensors are on the same device
+        # print(x[0].device)
+        augmentation_layer = nn.Linear(x[0].size(-1), x[0].size(-1)).to(x[0].device)
+        x_aug = [augmentation_layer(x_i) for x_i in x]
+        assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+            f"Augmented representation size {x_aug} does not match original size {x}"
+        # # Using a ReLU activation function to introduce non-linearity
+        x_aug = [F.relu(x_aug_i) for x_aug_i in x_aug]
+        # Returning the augmented representation
+        # This is a simple augmentation, more complex methods can be used
+        # depending on the task and the data.
+        return x_aug
+    def modality_representation_gaussian_augmentation(self, x):
+        # Instead of using Linear layer, apply a random Gaussian noise to the representation
+        noise_std = 0.8  # Standard deviation of the Gaussian noise
+        x_aug = [x_i + torch.randn_like(x_i) * noise_std for x_i in x]
+        assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+            f"Augmented representation size {x_aug} does not match original size {x}"
+        return x_aug
+    def autoencoder_augmentation(self, x):
+        feature_dim = x[0].size(-1)
+        bottleneck_dim = max(feature_dim // 2, 1)  # ensure >0
+        autoencoder = ModalityRepresentationAutoencoder(feature_dim, bottleneck_dim).to(x[0].device)
+        x_aug = autoencoder(x)
+        assert all(x_aug_i.size() == x_i.size() for x_aug_i, x_i in zip(x_aug, x)), \
+            f"Augmented representation size {x_aug} does not match original size {x}"
+        return x_aug
     # ---------- forward ----------
     def forward(self, textf, acouf, visuf, all_transformer_out=None):
         """
