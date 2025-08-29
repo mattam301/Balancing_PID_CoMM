@@ -146,8 +146,8 @@ class CoMM(nn.Module):
             x = [textf, acouf, visuf]
 
         # Augment twice
-        x1 = self._augment_fn(x)
-        x2 = self._augment_fn(x)
+        x1 = self.augment_1(x)
+        x2 = self.augment_2(x)
 
         # All masks
         all_masks = self.gen_all_possible_masks(len(x))
