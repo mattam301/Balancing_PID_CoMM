@@ -106,7 +106,7 @@ def get_OLD_IEMOCAP_loaders(batch_size=32, valid=0.1, num_workers=0, pin_memory=
 
 
 
-def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, epoch, optimizer=None, train=False, gamma_1=1.0, gamma_2=1.0, gamma_3=2.0, gamma_4=1.0, gamma_5=3): # prevent gradient explosion
+def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, epoch, optimizer=None, train=False, gamma_1=1.0, gamma_2=1.0, gamma_3=2.0, gamma_4=1.0, gamma_5=2): # prevent gradient explosion
     losses, preds, labels, masks = [], [], [], []
 
     assert not train or optimizer!=None
@@ -145,16 +145,7 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
                 "aug2_embed": z2,
                 "prototype": prototype  # You need to define/select this somewhere
             })
-        
 
-        # corr_loss, L_unco, L_cor = smurf_model.compute_corr_loss(m1, m2, m3)
-        # print("comm_loss:", comm_loss_values)
-        
-        # print("loss checking...")
-        # print("loss1:", loss_function(lp_1, labels_, umask).item())
-        # print("loss2:", (loss_function(lp_1, labels_, umask) + loss_function(lp_2, labels_, umask) + loss_function(lp_3, labels_, umask)).item())
-        # print("loss3:", (kl_loss(kl_lp_1, kl_p_all, umask) + kl_loss(kl_lp_2, kl_p_all, umask) + kl_loss(kl_lp_3, kl_p_all, umask)).item())
-        
         loss = 0.0
         if loss_mask[0]:  # Use lp_all loss
             loss += gamma_1 * loss_function(lp_all, labels_, umask)
@@ -171,13 +162,13 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
                 kl_loss(kl_lp_3, kl_p_all, umask)
             )
         if loss_mask[3]:  # Use CoMM loss
-            # print("CoMM loss:", comm_loss_values["loss"].item())
+            print("CoMM loss:", comm_loss_values["loss"].item())
             loss += gamma_4 * comm_loss_values["loss"]
         if loss_mask[4]:  # Use Smurf loss
             # print("Synergy and Redundancy Distance (S - 2R):", comm_loss_values["modal_loss"].item())
             # scale = min(1.0, epoch / 50.0)  # slowly increase gamma_5 from 0 to 1 over 5 epochs
             loss += gamma_5 * corr_loss.item()
-            # print("Smurf loss:", corr_loss.item())
+            print("Smurf loss:", corr_loss.item())
         lp_ = all_prob.view(-1, all_prob.size()[2])
 
         pred_ = torch.argmax(lp_,1)
@@ -195,10 +186,6 @@ def train_or_eval_model(model, loss_function, kl_loss, comm_loss, dataloader, ep
                 break
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             loss.backward()
-            
-            # if args.tensorboard:
-            #     for param in model.named_parameters():
-            #         writer.add_histogram(param[0], param[1].grad, epoch)
             optimizer.step()
 
     if preds!=[]:

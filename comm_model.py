@@ -375,9 +375,6 @@ class Transformer_Based_Model(nn.Module):
             augmentation_style=augmentation_style, 
             late_comm=self.late_comm
         )
-        # a layer for fusing all_transformer_out with comm_true_out
-        # self.comm_fuse = # ???
-
     @staticmethod
     def _build_mlp(in_dim, mlp_dim, out_dim):
         return nn.Sequential(OrderedDict([
@@ -479,8 +476,6 @@ class Transformer_Based_Model(nn.Module):
         ## This is another section to use SMURF decomposition
         # TODO: using SMURF Three_modal_model to: (1) Update final representations, (2) output smurf loss
         device = next(self.parameters()).device  # get the device of current model
-        # print(device)
-
         if self.use_smurf:
             m1, m2, m3, all_final_out = self.smurf_model(
                 textf, acouf, visuf, all_transformer_out
