@@ -127,14 +127,7 @@ class CoMM(nn.Module):
         Returns:
             z1, z2, all_final_out
         """
-        if self.late_comm:
-            # Late: use post-fusion features
-            if all_transformer_out is None:
-                raise ValueError("all_transformer_out is required for late_comm=True")
-            x = [textf, acouf, visuf]
-        else:
-            # Early: use raw projected features
-            x = [textf, acouf, visuf]
+        x = [textf, acouf, visuf]
 
         # Augment twice
         x1 = self.augment_1(x)
@@ -148,13 +141,8 @@ class CoMM(nn.Module):
         z2 = [self.head(z) for z in self.comm_enc(x2, mask_modalities=all_masks)]
 
         # If early_comm: add comm_true_out fusion
-        if not self.late_comm and all_transformer_out is not None:
-            comm_true_out = self.comm_enc(x, mask_modalities=None)  # [B, D]
-            comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)
-            fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)
-            # all_final_out = self.comm_fuse(fused_out)
-        else:
-            # Default to using just transformer output (e.g. late_comm)
-            # all_final_out = self.comm_fuse(torch.cat([all_transformer_out, all_transformer_out], dim=-1))
-            pass
+        # if not self.late_comm and all_transformer_out is not None:
+        comm_true_out = self.comm_enc(x, mask_modalities=None)  # [B, D]
+        comm_expanded = comm_true_out.unsqueeze(1).expand(-1, all_transformer_out.size(1), -1)
+        fused_out = torch.cat([all_transformer_out, comm_expanded], dim=-1)
         return z1, z2, fused_out
