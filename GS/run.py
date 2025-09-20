@@ -127,6 +127,11 @@ parser.add_argument(
     default=2025,
     help="random seed for reproducibility",
 )
+parser.add_argument(
+    "--copid",
+    action="store_true",
+    default=False,
+)
 
 args = parser.parse_args()
 

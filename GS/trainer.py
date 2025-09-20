@@ -36,7 +36,7 @@ def train_or_eval_model(
     epochs=100,
     classify="",
     shift_win=5,
-    copid=True,
+    copid=True, # newly added
 ):
     losses, preds_emo, labels_emo = [], [], []
     preds_sft, labels_sft = [], []
@@ -72,7 +72,7 @@ def train_or_eval_model(
         label_emo = torch.cat(label_emotions)
         label_sen = torch.cat(label_sentiments)
         
-        # Create 2 augmented versions of the input:
+        # My experiment zone: Create 2 augmented versions of the input:
         # Augmented version 1
         aug1_textf0 = augment_text(textf0)
         aug1_textf1 = augment_text(textf1)
@@ -103,12 +103,16 @@ def train_or_eval_model(
         logit_emo, logit_sen, logit_sft, extracted_feature = model(
             textf0, textf1, textf2, textf3, visuf, acouf, umask, qmask,
             dia_lengths)
-        comm_loss = 0
-        comm_loss_value = info_nce_loss(feat_aug1, feat_aug2)
-        comm_loss += comm_loss_value
-        comm_loss_value = info_nce_loss(feat_aug1, extracted_feature) + info_nce_loss(feat_aug1, extracted_feature)
-        comm_loss += comm_loss_value
-        
+        #copid loss calculating
+        # Detach augmented features from the computation graph
+        feat_aug1_detach = feat_aug1.detach()
+        feat_aug2_detach = feat_aug2.detach()
+        feat_orig_detach = extracted_feature.detach()
+
+        comm_loss = info_nce_loss(feat_aug1_detach, feat_aug2_detach) \
+                    + info_nce_loss(feat_aug1_detach, feat_orig_detach) \
+                    + info_nce_loss(feat_aug2_detach, feat_orig_detach)
+                
         
         prob_emo = F.log_softmax(logit_emo, -1)
         loss_emo = loss_function_emo(prob_emo, label_emo)

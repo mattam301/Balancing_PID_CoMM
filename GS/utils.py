@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 def batch_to_all_tva(feature_t, feature_v, feature_a, lengths, no_cuda):
