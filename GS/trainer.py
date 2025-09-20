@@ -3,7 +3,8 @@ import torch
 from sklearn.metrics import f1_score, accuracy_score
 import torch.nn.functional as F
 from module import build_match_sen_shift_label
-from utils import AutomaticWeightedLoss
+from utils import AutomaticWeightedLoss, info_nce_loss, augment_text, augment_audio, augment_visual
+
 
 seed = 2025
 
@@ -35,6 +36,7 @@ def train_or_eval_model(
     epochs=100,
     classify="",
     shift_win=5,
+    copid=True,
 ):
     losses, preds_emo, labels_emo = [], [], []
     preds_sft, labels_sft = [], []
@@ -69,11 +71,45 @@ def train_or_eval_model(
             label_sentiments.append(label_sentiment[:dia_lengths[j], j])
         label_emo = torch.cat(label_emotions)
         label_sen = torch.cat(label_sentiments)
+        
+        # Create 2 augmented versions of the input:
+        # Augmented version 1
+        aug1_textf0 = augment_text(textf0)
+        aug1_textf1 = augment_text(textf1)
+        aug1_textf2 = augment_text(textf2)
+        aug1_textf3 = augment_text(textf3)
+        aug1_visuf = augment_visual(visuf)
+        aug1_acouf = augment_audio(acouf)
 
+        # Augmented version 2
+        aug2_textf0 = augment_text(textf0)
+        aug2_textf1 = augment_text(textf1)
+        aug2_textf2 = augment_text(textf2)
+        aug2_textf3 = augment_text(textf3)
+        aug2_visuf = augment_visual(visuf)
+        aug2_acouf = augment_audio(acouf)
+        
+        ## Pass the augmented version
+        logit_emo_aug1, logit_sen_aug1, logit_sft_aug1, feat_aug1 = model(
+            aug1_textf0, aug1_textf1, aug1_textf2, aug1_textf3, aug1_visuf, aug1_acouf,
+            umask, qmask, dia_lengths
+        )
+
+        logit_emo_aug2, logit_sen_aug2, logit_sft_aug2, feat_aug2 = model(
+            aug2_textf0, aug2_textf1, aug2_textf2, aug2_textf3, aug2_visuf, aug2_acouf,
+            umask, qmask, dia_lengths
+        )
+        ## Original pass
         logit_emo, logit_sen, logit_sft, extracted_feature = model(
             textf0, textf1, textf2, textf3, visuf, acouf, umask, qmask,
             dia_lengths)
-
+        comm_loss = 0
+        comm_loss_value = info_nce_loss(feat_aug1, feat_aug2)
+        comm_loss += comm_loss_value
+        comm_loss_value = info_nce_loss(feat_aug1, extracted_feature) + info_nce_loss(feat_aug1, extracted_feature)
+        comm_loss += comm_loss_value
+        
+        
         prob_emo = F.log_softmax(logit_emo, -1)
         loss_emo = loss_function_emo(prob_emo, label_emo)
         prob_sen = F.log_softmax(logit_sen, -1)
@@ -105,6 +141,8 @@ def train_or_eval_model(
             loss = loss_sen
         else:
             NotImplementedError
+        if copid==True:
+            loss += 0.5*comm_loss
 
         preds_emo.append(torch.argmax(prob_emo, 1).cpu().numpy())
         labels_emo.append(label_emo.cpu().numpy())

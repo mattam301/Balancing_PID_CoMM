@@ -23,7 +23,55 @@ def batch_to_all_tva(feature_t, feature_v, feature_a, lengths, no_cuda):
 
     return node_feature_t, node_feature_v, node_feature_a
 
+def info_nce_loss(rep_m: torch.Tensor, rep_a: torch.Tensor, temperature: float = 0.07) -> torch.Tensor:
+    """
+    Compute InfoNCE loss for two batches of representations.
 
+    Args:
+        rep_m: torch.Tensor of shape [N, D]
+        rep_a: torch.Tensor of shape [N, D]
+        temperature: scaling factor for logits
+
+    Returns:
+        loss: scalar tensor
+    """
+    # Normalize to unit sphere (cosine similarity)
+    rep_m = F.normalize(rep_m, dim=1)
+    rep_a = F.normalize(rep_a, dim=1)
+
+    N = rep_m.size(0)
+
+    # Similarity matrix [N, N]
+    logits = torch.matmul(rep_m, rep_a.T) / temperature
+
+    # Targets are diagonal indices (positive pairs)
+    labels = torch.arange(N, device=rep_m.device)
+
+    # Cross entropy loss
+    loss_m2a = F.cross_entropy(logits, labels)
+    loss_a2m = F.cross_entropy(logits.T, labels)
+
+    # Symmetrized loss
+    loss = (loss_m2a + loss_a2m) / 2
+    return loss
+
+def augment_text(tensor, noise_level=0.1):
+    # Add small Gaussian noise (simulating slight perturbation in embeddings)
+    if tensor is None:
+        return None
+    return tensor + noise_level * torch.randn_like(tensor)
+
+def augment_audio(tensor, noise_level=0.05):
+    # Add small Gaussian noise to audio features
+    if tensor is None:
+        return None
+    return tensor + noise_level * torch.randn_like(tensor)
+
+def augment_visual(tensor, noise_level=0.05):
+    # Add small Gaussian noise to visual features
+    if tensor is None:
+        return None
+    return tensor + noise_level * torch.randn_like(tensor)
 class AutomaticWeightedLoss(nn.Module):
     """automatically weighted multi-task loss
     Params:

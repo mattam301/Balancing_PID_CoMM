@@ -136,8 +136,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 world_size = torch.cuda.device_count()
 os.environ["WORLD_SIZE"] = str(world_size)
 
-MELD_path = "/home/tuan/workspace/merc/MERC-MITPA/data/meld/meld_multi_features.pkl"
-IEMOCAP_path = "/home/tuan/workspace/merc/SDT/data/iemocap_multi_features.pkl"
+MELD_path = "data/meld_multi_features.pkl"
+IEMOCAP_path = "data/iemocap_multi_features.pkl"
 IEMOCAP4_path = ""
 CMUMOSEI7_path = "/home/tuan/workspace/merc/MERC-MITPA/data/new_mosei/cmumosei_multi_regression_features.pkl"
 OLD_IEMOCAP_path = "/home/tuan/workspace/merc/SDT/old_data_converted/iemocap_multi_features.pkl"
@@ -390,6 +390,7 @@ def main(local_rank):
             args.epochs,
             args.classify,
             args.shift_win,
+            args.copid,
         )
 
         valid_loss, valid_label_emo, valid_pred_emo, valid_acc_emo, valid_f1_emo, valid_label_sen, valid_pred_sen, valid_acc_sen, valid_f1_sen, valid_acc_sft, valid_f1_sft, _, _, _ = train_or_eval_model(
@@ -409,6 +410,7 @@ def main(local_rank):
             args.epochs,
             args.classify,
             args.shift_win,
+            copid=False
         )
 
         print(
@@ -441,6 +443,7 @@ def main(local_rank):
                 args.epochs,
                 args.classify,
                 args.shift_win,
+                copid=False,
             )
 
             all_f1_emo.append(test_f1_emo)
